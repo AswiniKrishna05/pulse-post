@@ -74,7 +74,7 @@ class RegisterView extends StatelessWidget {
                 children: [
                   const Text("Already have an account?"),
                   TextButton(
-                    onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.signupPersonal),
+                    onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.login),
 
                       child: const Text("Login"),
                   ),

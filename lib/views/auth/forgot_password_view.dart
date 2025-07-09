@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/forgot_password_viewmodel.dart';
 
-
 class ForgotPasswordView extends StatelessWidget {
   const ForgotPasswordView({super.key});
 
@@ -35,6 +34,8 @@ class ForgotPasswordView extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
+
+              // Email TextField
               TextField(
                 onChanged: vm.updateEmail,
                 keyboardType: TextInputType.emailAddress,
@@ -45,10 +46,12 @@ class ForgotPasswordView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
+
+              // Send OTP Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: vm.isLoading ? null : () => vm.sendResetLink(context),
+                  onPressed: vm.isLoading ? null : () => vm.sendOtpToEmail(context),
                   child: vm.isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
                       : const Text('Verify email address'),

@@ -20,52 +20,69 @@ class OTPVerificationView extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
-          child: Column(
-            children: [
-              Image.asset('assets/images/verify_otp.png', height: 180),
-              const SizedBox(height: 16),
-              const Text(
-                'Verify email address',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Enter the four-digit OTP code sent to your email address ${_obfuscateEmail(email)}',
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              OtpTextField(
-                numberOfFields: 4,
-                borderColor: Colors.deepPurple,
-                showFieldAsBox: true,
-                onCodeChanged: (code) {
-                  vm.updateOtp(code);
-                },
-                onSubmit: (code) {
-                  vm.verifyOtp(context);
-                },
-              ),
-
-
-
-              const SizedBox(height: 24),
-              Consumer<OTPVerificationViewModel>(
-                builder: (_, vm, __) => SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: vm.isLoading ? null : () => vm.verifyOtp(context),
-                    child: vm.isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text("Verify OTP code"),
+          child: Consumer<OTPVerificationViewModel>(
+            builder: (context, vm, _) {
+              // Navigation effect: move to reset password screen when otpVerified becomes true
+              if (vm.otpVerified) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Navigator.pushNamed(context, '/reset-password', arguments: email);
+                });
+              }
+              if (vm.passwordReset) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.check_circle, color: Colors.green, size: 80),
+                    SizedBox(height: 16),
+                    Text('Password reset successful!', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  ],
+                );
+              }
+              return Column(
+                children: [
+                  Image.asset('assets/images/verify_otp.png', height: 180),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Verify email address',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              TextButton(
-                onPressed: () => vm.resendOtp(context),
-                child: const Text("Didn't receive the email? Click to resend"),
-              ),
-            ],
+                  const SizedBox(height: 8),
+                  Text(
+                    'Enter the four-digit OTP code sent to your email address ${_obfuscateEmail(email)}',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  OtpTextField(
+                    numberOfFields: 4,
+                    borderColor: Colors.deepPurple,
+                    showFieldAsBox: true,
+                    onCodeChanged: (code) {
+                      vm.updateOtp(code); // still good for typing feedback
+                    },
+                    onSubmit: (code) {
+                      vm.updateOtp(code); // ✅ ensure full 4-digit value is saved
+                      vm.verifyOtp(context); // 🔐 verify with full code
+                    },
+                  ),
+
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: vm.isLoading ? null : () => vm.verifyOtp(context),
+                      child: vm.isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text("Verify OTP code"),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextButton(
+                    onPressed: () => vm.resendOtp(context),
+                    child: const Text("Didn't receive the email? Click to resend"),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),

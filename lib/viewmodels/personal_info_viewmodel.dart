@@ -67,9 +67,10 @@ class PersonalInfoViewModel extends ChangeNotifier {
       'referral': referral,
       'profileImageUrl': imageUrl,
       'createdAt': FieldValue.serverTimestamp(),
+      'isCompletedInfo': true,
     });
 
-    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.socialFollow, (route) => false);
   }
 
   void setDob(DateTime date) {

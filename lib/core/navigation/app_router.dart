@@ -8,6 +8,7 @@ import '../../views/auth/otp_verification_view.dart';
 import '../../views/personal_info/personal_info_view.dart';
 import '../../views/auth/register_view.dart';
 import '../../views/splash/splash_view.dart';
+import '../../views/home/social_follow_view.dart';
 import 'app_routes.dart';
 
 class AppRouter {
@@ -25,13 +26,18 @@ class AppRouter {
         final email = settings.arguments as String;
         return MaterialPageRoute(builder: (_) => OTPVerificationView(email: email));
       case AppRoutes.resetPassword:
-        return MaterialPageRoute(builder: (_) => const ResetPasswordView());
+        final email = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => ResetPasswordView(email: email));
       case AppRoutes.passwordResetSuccess:
         return MaterialPageRoute(builder: (_) => const PasswordResetSuccessView());
       case AppRoutes.signupPersonal:
         return MaterialPageRoute(builder: (_) => const PersonalInfoView());
       case AppRoutes.home:
-        return MaterialPageRoute(builder: (_) => const HomeView());
+        return MaterialPageRoute(builder: (_) => HomeView());
+      case AppRoutes.socialFollow:
+        return MaterialPageRoute(builder: (_) => SocialFollowView());
+
+
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(

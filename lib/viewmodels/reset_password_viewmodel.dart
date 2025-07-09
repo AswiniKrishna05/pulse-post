@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:cloud_functions/cloud_functions.dart';
 import '../core/navigation/app_routes.dart';
 
 class ResetPasswordViewModel extends ChangeNotifier {
@@ -27,11 +27,12 @@ class ResetPasswordViewModel extends ChangeNotifier {
     confirmPassword = value;
   }
 
-  Future<void> resetPassword(BuildContext context) async {
+  Future<void> resetPassword(BuildContext context, String email) async {
     if (newPassword.isEmpty || confirmPassword.isEmpty) {
       _showSnackbar(context, 'Please fill in both fields');
       return;
     }
+
     if (newPassword != confirmPassword) {
       _showSnackbar(context, 'Passwords do not match');
       return;
@@ -40,11 +41,20 @@ class ResetPasswordViewModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    // TODO: Replace with backend call
-    await Future.delayed(const Duration(seconds: 2));
+    try {
+      final result = await FirebaseFunctions.instance
+          .httpsCallable('resetPasswordWithEmail')
+          .call({'email': email, 'newPassword': newPassword});
 
-    _showSnackbar(context, 'Password reset successful');
-    Navigator.pushReplacementNamed(context, AppRoutes.passwordResetSuccess);
+      if (result.data['success'] == true) {
+        _showSnackbar(context, 'Password reset successful');
+        Navigator.pushReplacementNamed(context, AppRoutes.passwordResetSuccess);
+      } else {
+        _showSnackbar(context, 'Reset failed');
+      }
+    } catch (e) {
+      _showSnackbar(context, 'Error: ${e.toString()}');
+    }
 
     isLoading = false;
     notifyListeners();

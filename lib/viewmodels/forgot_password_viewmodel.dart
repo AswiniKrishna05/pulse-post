@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:cloud_functions/cloud_functions.dart';
 import '../core/navigation/app_routes.dart';
 
 class ForgotPasswordViewModel extends ChangeNotifier {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   String email = '';
   bool isLoading = false;
 
   void updateEmail(String value) {
-    email = value;
+    email = value.trim();
     notifyListeners();
   }
 
-  Future<void> sendResetLink(BuildContext context) async {
+  Future<void> sendOtpToEmail(BuildContext context) async {
     if (email.isEmpty || !email.contains('@')) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter a valid email address')),
@@ -24,17 +22,12 @@ class ForgotPasswordViewModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    try {
-      await _auth.sendPasswordResetEmail(email: email);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Reset link sent to email')),
-      );
-      Navigator.pushNamed(context, AppRoutes.otp, arguments: email);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
-      );
-    }
+    await Future.delayed(const Duration(seconds: 2));
+    // Mock: Always succeed
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('OTP sent to your email (mock).')),
+    );
+    Navigator.pushNamed(context, AppRoutes.otp, arguments: email);
 
     isLoading = false;
     notifyListeners();
