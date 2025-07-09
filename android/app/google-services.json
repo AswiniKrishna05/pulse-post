@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "435140836187",
+    "project_id": "pulse-post-8b06a",
+    "storage_bucket": "pulse-post-8b06a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435140836187:android:8957bb4e22da51de43f87e",
+        "android_client_info": {
+          "package_name": "com.example.ziya_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjVygWQB5FivTJp70hGQbO-C6a02Jti4A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
