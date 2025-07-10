@@ -38,53 +38,33 @@ class InterestsCategoriesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<PersonalInfoViewModel>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Interests & Categories'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Select your interests:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+        const SizedBox(height: 8),
+        ...interestCategories.entries.map((entry) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Select your interests:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-            const SizedBox(height: 8),
-            Expanded(
-              child: ListView(
-                children: interestCategories.entries.map((entry) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text(entry.key, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    ),
-                    Wrap(
-                      spacing: 8,
-                      children: entry.value.map((interest) => FilterChip(
-                        label: Text(interest),
-                        selected: vm.selectedInterests.contains(interest),
-                        onSelected: (_) => vm.toggleInterest(interest),
-                      )).toList(),
-                    ),
-                  ],
-                )).toList(),
-              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(entry.key, style: const TextStyle(fontWeight: FontWeight.bold)),
             ),
-            const SizedBox(height: 16),
-            Text('${vm.selectedInterests.length} selected'),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: vm.selectedInterests.isNotEmpty ? () {
-                  // TODO: Handle continue action
-                } : null,
-                child: const Text('Continue'),
-              ),
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: entry.value.map((interest) => FilterChip(
+                label: Text(interest),
+                selected: vm.selectedInterests.contains(interest),
+                onSelected: (_) => vm.toggleInterest(interest),
+              )).toList(),
             ),
           ],
-        ),
-      ),
+        )),
+        const SizedBox(height: 16),
+        Text('${vm.selectedInterests.length} selected'),
+      ],
     );
   }
-} 
+}
