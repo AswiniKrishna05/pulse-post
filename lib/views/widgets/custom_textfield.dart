@@ -8,6 +8,7 @@ class CustomTextField extends StatefulWidget {
   final Function()? onToggleVisibility;
   final ValueChanged<String> onChanged;
   final String? initialValue;
+  final TextEditingController? controller;
 
   const CustomTextField({
     super.key,
@@ -18,6 +19,7 @@ class CustomTextField extends StatefulWidget {
     this.suffixIcon,
     this.onToggleVisibility,
     this.initialValue,
+    this.controller,
   });
 
   @override
@@ -42,7 +44,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      initialValue: widget.initialValue,
+      controller: widget.controller,
+      initialValue: widget.controller == null ? widget.initialValue : null,
       onChanged: widget.onChanged,
       obscureText: _obscureText,
       decoration: InputDecoration(

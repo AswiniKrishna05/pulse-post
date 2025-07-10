@@ -15,6 +15,13 @@ class PersonalInfoView extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = Provider.of<PersonalInfoViewModel>(context);
 
+    // Fetch location only once when the widget is built and location fields are empty
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (vm.city.isEmpty && vm.state.isEmpty && vm.country.isEmpty && vm.pinCode.isEmpty) {
+        vm.fetchAndSetLocation();
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(title: const Text('Sign Up')),
       body: SafeArea(
@@ -26,7 +33,6 @@ class PersonalInfoView extends StatelessWidget {
               const Text('Create Account', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
 
-              // Profile Image
               Center(
                 child: GestureDetector(
                   onTap: () {
@@ -67,7 +73,6 @@ class PersonalInfoView extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              // Form Fields
               CustomTextField(
                 label: 'Full Name',
                 hint: 'Enter your Full Name',
@@ -140,7 +145,6 @@ class PersonalInfoView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // Gender
               const Text('Gender', style: TextStyle(fontWeight: FontWeight.bold)),
               Row(
                 children: [
@@ -166,7 +170,6 @@ class PersonalInfoView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // Country & State
               Row(
                 children: [
                   Expanded(
@@ -198,7 +201,7 @@ class PersonalInfoView extends StatelessWidget {
                       value: vm.state.isNotEmpty ? vm.state : null,
                       decoration: const InputDecoration(labelText: 'State', border: OutlineInputBorder()),
                       items: const [
-                        DropdownMenuItem(value: 'kerala', child: Text('Kerala')),
+                        DropdownMenuItem(value: 'Kerala', child: Text('Kerala')),
                         DropdownMenuItem(value: 'Maharashtra', child: Text('Maharashtra')),
                         DropdownMenuItem(value: 'Delhi', child: Text('Delhi')),
                       ],
@@ -209,13 +212,13 @@ class PersonalInfoView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // City & Pin Code
               Row(
                 children: [
                   Expanded(
                     child: CustomTextField(
                       label: 'City',
                       hint: 'Enter City',
+                      controller: vm.cityController,
                       onChanged: (val) => vm.updateField('city', val),
                     ),
                   ),
@@ -224,18 +227,17 @@ class PersonalInfoView extends StatelessWidget {
                     child: CustomTextField(
                       label: 'Pin Code',
                       hint: 'Enter Pincode',
-                      onChanged: (val) => vm.updateField('pin', val),
+                      controller: vm.pinCodeController,
+                      onChanged: (val) => vm.updateField('pinCode', val),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
 
-              // Qualification
               DropdownButtonFormField<String>(
                 value: vm.qualification.isNotEmpty &&
-                    ['10th', 'plustwo', 'diploma', 'bachelor of degree', 'master of degree', 'others']
-                        .contains(vm.qualification)
+                    ['10th', 'plustwo', 'diploma', 'bachelor of degree', 'master of degree', 'others'].contains(vm.qualification)
                     ? vm.qualification
                     : 'others',
                 decoration: const InputDecoration(labelText: 'Qualification', border: OutlineInputBorder()),
@@ -266,7 +268,6 @@ class PersonalInfoView extends StatelessWidget {
                 ),
               const SizedBox(height: 16),
 
-              // Occupation
               CustomTextField(
                 label: 'Occupation',
                 hint: 'Select Occupation',
@@ -274,11 +275,9 @@ class PersonalInfoView extends StatelessWidget {
               ),
               const SizedBox(height: 24),
 
-              // ✅ Interests Section (Embedded!)
               const InterestsCategoriesView(),
               const SizedBox(height: 24),
 
-              // Referral
               CustomTextField(
                 label: 'Referral Code (Optional)',
                 hint: 'Enter referral code',
@@ -286,15 +285,15 @@ class PersonalInfoView extends StatelessWidget {
               ),
               const SizedBox(height: 24),
 
-              // ✅ Continue Button
               GestureDetector(
                 onTap: () {
                   if (vm.isFormValid) {
                     vm.saveToFirestore(context);
                   } else {
+                    final error = vm.getValidationErrorMessage();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please fill all required fields correctly.'),
+                      SnackBar(
+                        content: Text(error.isNotEmpty ? error : 'Please fill all required fields correctly.'),
                       ),
                     );
                   }
@@ -305,12 +304,21 @@ class PersonalInfoView extends StatelessWidget {
                     width: double.infinity,
                     child: PrimaryButton(
                       text: 'Continue',
-                      onPressed: vm.isFormValid ? () => vm.saveToFirestore(context) : null,
+                      onPressed: vm.isFormValid
+                          ? () => vm.saveToFirestore(context)
+                          : () {
+                        final error = vm.getValidationErrorMessage();
+                        if (error.isNotEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error)),
+                          );
+                        }
+                      },
+
                     ),
                   ),
                 ),
               ),
-
               const SizedBox(height: 32),
             ],
           ),

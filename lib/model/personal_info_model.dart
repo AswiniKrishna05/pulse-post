@@ -12,9 +12,18 @@ class PersonalInfoModel {
   final String pinCode;
   final String qualification;
   final String occupation;
-  final List<String> interests;
-  final String? profileImageUrl;
   final String? referral;
+  final String? profileImageUrl;
+
+  final List<String> education;
+  final List<String> technology;
+  final List<String> lifestyle;
+  final List<String> entertainment;
+  final List<String> careerAndMoney;
+  final List<String> socialMedia;
+  final List<String> personalGrowth;
+  final List<String> regionalAndCultural;
+  final List<String> wellbeingAndAwareness;
 
   PersonalInfoModel({
     required this.fullName,
@@ -30,7 +39,15 @@ class PersonalInfoModel {
     required this.pinCode,
     required this.qualification,
     required this.occupation,
-    required this.interests,
+    required this.education,
+    required this.technology,
+    required this.lifestyle,
+    required this.entertainment,
+    required this.careerAndMoney,
+    required this.socialMedia,
+    required this.personalGrowth,
+    required this.regionalAndCultural,
+    required this.wellbeingAndAwareness,
     this.profileImageUrl,
     this.referral,
   });
@@ -50,10 +67,17 @@ class PersonalInfoModel {
       'pinCode': pinCode,
       'qualification': qualification,
       'occupation': occupation,
-      'interests': interests,
-      'profileImageUrl': profileImageUrl,
-      'referral': referral,
-      'createdAt': DateTime.now(),
+      'education': education,
+      'technology': technology,
+      'lifestyle': lifestyle,
+      'entertainment': entertainment,
+      'careerAndMoney': careerAndMoney,
+      'socialMedia': socialMedia,
+      'personalGrowth': personalGrowth,
+      'regionalAndCultural': regionalAndCultural,
+      'wellbeingAndAwareness': wellbeingAndAwareness,
+      if (profileImageUrl != null) 'profileImageUrl': profileImageUrl,
+      if (referral != null) 'referral': referral,
     };
   }
 }

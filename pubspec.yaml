@@ -47,6 +47,9 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   shared_preferences: ^2.5.3
   firebase_database: ^11.3.9
+  geolocator: ^10.0.1
+  geocoding: ^2.1.0
+  permission_handler: ^11.0.1
 
 dev_dependencies:
   flutter_test:

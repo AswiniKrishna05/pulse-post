@@ -6,6 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../model/personal_info_model.dart';
 import '../core/navigation/app_routes.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PersonalInfoViewModel extends ChangeNotifier {
   File? profileImage;
@@ -26,7 +29,23 @@ class PersonalInfoViewModel extends ChangeNotifier {
   String qualification = '';
   String occupation = '';
   String referral = '';
-  final Set<String> selectedInterests = {};
+
+  // Controllers for auto-updating fields
+  final TextEditingController cityController = TextEditingController();
+  final TextEditingController stateController = TextEditingController();
+  final TextEditingController countryController = TextEditingController();
+  final TextEditingController pinCodeController = TextEditingController();
+
+  // Interests
+  Set<String> education = {};
+  Set<String> technology = {};
+  Set<String> lifestyle = {};
+  Set<String> entertainment = {};
+  Set<String> careerAndMoney = {};
+  Set<String> socialMedia = {};
+  Set<String> personalGrowth = {};
+  Set<String> regionalAndCultural = {};
+  Set<String> wellbeingAndAwareness = {};
 
   void pickImage(ImageSource source) async {
     final picker = ImagePicker();
@@ -36,6 +55,33 @@ class PersonalInfoViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  String getValidationErrorMessage() {
+    List<String> errors = [];
+    if (fullName.isEmpty) errors.add('Full Name');
+    if (email.isEmpty) errors.add('Email');
+    if (mobile.isEmpty) errors.add('Mobile Number');
+    if (password.isEmpty) errors.add('Password');
+    if (confirmPassword.isEmpty) errors.add('Confirm Password');
+    if (password != confirmPassword) errors.add('Passwords do not match');
+    if (dob == null) errors.add('Date of Birth');
+    if (dob != null && age < 16) errors.add('You must be at least 16 years old');
+    if (gender.isEmpty) errors.add('Gender');
+    if (country.isEmpty) errors.add('Country');
+    if (state.isEmpty) errors.add('State');
+    if (city.isEmpty) errors.add('City');
+    if (pinCode.isEmpty) errors.add('Pin Code');
+    if (qualification.isEmpty) errors.add('Qualification');
+    if (occupation.isEmpty) errors.add('Occupation');
+    if (totalSelectedInterests.isEmpty) errors.add('At least one interest');
+    if (errors.isEmpty) return '';
+    // If only one error and it's a custom message, show it directly
+    if (errors.length == 1 && (errors[0].startsWith('Passwords') || errors[0].startsWith('You must'))) {
+      return errors[0];
+    }
+    return 'Please correct: ' + errors.join(', ');
+  }
+
 
   void setDob(DateTime date) {
     dob = date;
@@ -55,10 +101,10 @@ class PersonalInfoViewModel extends ChangeNotifier {
       case 'password': password = value; break;
       case 'confirmPassword': confirmPassword = value; break;
       case 'gender': gender = value; break;
-      case 'country': country = value; break;
-      case 'state': state = value; break;
-      case 'city': city = value; break;
-      case 'pinCode': pinCode = value; break;
+      case 'country': country = value; countryController.text = value; break;
+      case 'state': state = value; stateController.text = value; break;
+      case 'city': city = value; cityController.text = value; break;
+      case 'pinCode': pinCode = value; pinCodeController.text = value; break;
       case 'qualification': qualification = value; break;
       case 'occupation': occupation = value; break;
       case 'referral': referral = value; break;
@@ -66,13 +112,29 @@ class PersonalInfoViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleInterest(String interest) {
-    if (selectedInterests.contains(interest)) {
-      selectedInterests.remove(interest);
+  void toggleCategoryInterest(String category, String interest) {
+    final Set<String> categorySet = getCategorySet(category);
+    if (categorySet.contains(interest)) {
+      categorySet.remove(interest);
     } else {
-      selectedInterests.add(interest);
+      categorySet.add(interest);
     }
     notifyListeners();
+  }
+
+  Set<String> getCategorySet(String category) {
+    switch (category) {
+      case 'education': return education;
+      case 'technology': return technology;
+      case 'lifestyle': return lifestyle;
+      case 'entertainment': return entertainment;
+      case 'careerAndMoney': return careerAndMoney;
+      case 'socialMedia': return socialMedia;
+      case 'personalGrowth': return personalGrowth;
+      case 'regionalAndCultural': return regionalAndCultural;
+      case 'wellbeingAndAwareness': return wellbeingAndAwareness;
+      default: return {};
+    }
   }
 
   bool get isFormValid {
@@ -91,7 +153,21 @@ class PersonalInfoViewModel extends ChangeNotifier {
         pinCode.isNotEmpty &&
         qualification.isNotEmpty &&
         occupation.isNotEmpty &&
-        selectedInterests.isNotEmpty;
+        totalSelectedInterests.isNotEmpty;
+  }
+
+  List<String> get totalSelectedInterests {
+    return [
+      ...education,
+      ...technology,
+      ...lifestyle,
+      ...entertainment,
+      ...careerAndMoney,
+      ...socialMedia,
+      ...personalGrowth,
+      ...regionalAndCultural,
+      ...wellbeingAndAwareness,
+    ];
   }
 
   Future<void> saveToFirestore(BuildContext context) async {
@@ -123,16 +199,94 @@ class PersonalInfoViewModel extends ChangeNotifier {
         pinCode: pinCode,
         qualification: qualification,
         occupation: occupation,
-        interests: selectedInterests.toList(),
         profileImageUrl: imageUrl,
         referral: referral.isEmpty ? null : referral,
+        education: education.toList(),
+        technology: technology.toList(),
+        lifestyle: lifestyle.toList(),
+        entertainment: entertainment.toList(),
+        careerAndMoney: careerAndMoney.toList(),
+        socialMedia: socialMedia.toList(),
+        personalGrowth: personalGrowth.toList(),
+        regionalAndCultural: regionalAndCultural.toList(),
+        wellbeingAndAwareness: wellbeingAndAwareness.toList(),
       );
+
+      print('DEBUG PersonalInfoModel: ' + userModel.toMap().toString());
 
       await FirebaseFirestore.instance.collection('users').doc(uid).set(userModel.toMap());
 
       Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (_) => false);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
+    }
+  }
+
+  Future<void> handleLocationPermission() async {
+    final status = await Permission.location.status;
+    if (status.isDenied) {
+      final result = await Permission.location.request();
+      if (result.isGranted) {
+        print('✅ Location permission granted');
+      } else if (result.isPermanentlyDenied) {
+        openAppSettings(); // redirect to settings
+      } else {
+        print('❌ Location permission denied');
+      }
+    } else if (status.isGranted) {
+      print('✅ Already granted');
+    }
+  }
+
+  Future<Position> getCurrentLocation() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      throw Exception('Location services are disabled.');
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw Exception('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      throw Exception('Location permissions are permanently denied.');
+    }
+
+    return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+  }
+
+  Future<void> fetchAndSetLocation() async {
+    try {
+      await handleLocationPermission();
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        // Location services are not enabled
+        return;
+      }
+
+      Position position = await getCurrentLocation();
+      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+
+      if (placemarks.isNotEmpty) {
+        final place = placemarks.first;
+        city = place.locality ?? '';
+        state = place.administrativeArea ?? '';
+        country = place.country ?? '';
+        pinCode = place.postalCode ?? '';
+        cityController.text = city;
+        stateController.text = state;
+        countryController.text = country;
+        pinCodeController.text = pinCode;
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Location error: $e');
     }
   }
 }
