@@ -7,6 +7,7 @@ class CustomTextField extends StatelessWidget {
   final IconData? suffixIcon;
   final Function()? onToggleVisibility;
   final ValueChanged<String> onChanged;
+  final String? initialValue;
 
   const CustomTextField({
     super.key,
@@ -16,11 +17,17 @@ class CustomTextField extends StatelessWidget {
     this.obscure = false,
     this.suffixIcon,
     this.onToggleVisibility,
+    this.initialValue,
   });
 
   @override
   Widget build(BuildContext context) {
+    final controller = TextEditingController(text: initialValue);
+    controller.selection = TextSelection.fromPosition(
+      TextPosition(offset: controller.text.length),
+    );
     return TextField(
+      controller: controller,
       onChanged: onChanged,
       obscureText: obscure,
       decoration: InputDecoration(

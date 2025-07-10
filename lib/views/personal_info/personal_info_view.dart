@@ -6,6 +6,7 @@ import '../../core/navigation/app_routes.dart';
 import '../../viewmodels/personal_info_viewmodel.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/primary_button.dart';
+import 'interests_categories_view.dart';
 
 
 class PersonalInfoView extends StatelessWidget {
@@ -121,15 +122,39 @@ class PersonalInfoView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            DropdownButtonFormField<String>(
-              value: vm.gender.isNotEmpty ? vm.gender : null,
-              decoration: const InputDecoration(labelText: 'Gender', border: OutlineInputBorder()),
-              items: const [
-                DropdownMenuItem(value: 'Male', child: Text('Male')),
-                DropdownMenuItem(value: 'Female', child: Text('Female')),
-                DropdownMenuItem(value: 'Other', child: Text('Other')),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Gender', style: TextStyle(fontWeight: FontWeight.bold)),
+                Row(
+                  children: [
+                    Radio<String>(
+                      value: 'Male',
+                      groupValue: vm.gender,
+                      onChanged: (value) {
+                        vm.updateField('gender', value!);
+                      },
+                    ),
+                    const Text('Male'),
+                    Radio<String>(
+                      value: 'Female',
+                      groupValue: vm.gender,
+                      onChanged: (value) {
+                        vm.updateField('gender', value!);
+                      },
+                    ),
+                    const Text('Female'),
+                    Radio<String>(
+                      value: 'Other',
+                      groupValue: vm.gender,
+                      onChanged: (value) {
+                        vm.updateField('gender', value!);
+                      },
+                    ),
+                    const Text('Other'),
+                  ],
+                ),
               ],
-              onChanged: (val) => vm.updateField('gender', val!),
             ),
             const SizedBox(height: 16),
 
@@ -197,11 +222,37 @@ class PersonalInfoView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            CustomTextField(
-              label: 'Qualification',
-              hint: 'Select Qualification',
-              onChanged: (val) => vm.updateField('qualification', val),
+            DropdownButtonFormField<String>(
+              value: vm.qualification.isNotEmpty && [
+                '10th', 'plustwo', 'diploma', 'bachelor of degree', 'master of degree', 'others'
+              ].contains(vm.qualification) ? vm.qualification : 'others',
+              decoration: const InputDecoration(labelText: 'Qualification', border: OutlineInputBorder()),
+              items: const [
+                DropdownMenuItem(value: '10th', child: Text('10th')),
+                DropdownMenuItem(value: 'plustwo', child: Text('Plustwo')),
+                DropdownMenuItem(value: 'diploma', child: Text('Diploma')),
+                DropdownMenuItem(value: 'bachelor of degree', child: Text('Bachelor of Degree')),
+                DropdownMenuItem(value: 'master of degree', child: Text('Master of Degree')),
+                DropdownMenuItem(value: 'others', child: Text('Others')),
+              ],
+              onChanged: (val) {
+                if (val == 'others') {
+                  vm.updateField('qualification', 'others');
+                } else {
+                  vm.updateField('qualification', val!);
+                }
+              },
             ),
+            if (vm.qualification == 'others')
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: CustomTextField(
+                  label: 'Please specify',
+                  hint: 'Enter your qualification',
+                  onChanged: (val) => vm.updateField('customQualification', val),
+                  initialValue: vm.customQualification,
+                ),
+              ),
             const SizedBox(height: 16),
 
             CustomTextField(
@@ -209,7 +260,10 @@ class PersonalInfoView extends StatelessWidget {
               hint: 'Select Occupation',
               onChanged: (val) => vm.updateField('occupation', val),
             ),
-            const SizedBox(height: 16),
+            // const SizedBox(height: 24),
+            // const InterestsCategoriesView(),
+            // const SizedBox(height: 24),
+
 
             CustomTextField(
               label: 'Referral Code (Optional)',

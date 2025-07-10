@@ -20,8 +20,10 @@ class PersonalInfoViewModel extends ChangeNotifier {
   String city = '';
   String pinCode = '';
   String qualification = '';
+  String customQualification = '';
   String occupation = '';
   String referral = '';
+  Set<String> selectedInterests = {};
 
   Future<void> pickImage(ImageSource source) async {
     final picker = ImagePicker();
@@ -68,7 +70,7 @@ class PersonalInfoViewModel extends ChangeNotifier {
       'state': state,
       'city': city,
       'pinCode': pinCode,
-      'qualification': qualification,
+      'qualification': qualification == 'others' ? customQualification : qualification,
       'occupation': occupation,
       'referral': referral,
       'profileImageUrl': imageUrl,
@@ -104,9 +106,19 @@ class PersonalInfoViewModel extends ChangeNotifier {
       case 'state': state = value; break;
       case 'city': city = value; break;
       case 'pin': pinCode = value; break;
-      case 'qualification': qualification = value; break;
+      case 'qualification': qualification = value; customQualification = ''; break;
+      case 'customQualification': customQualification = value; break;
       case 'occupation': occupation = value; break;
       case 'referral': referral = value; break;
+    }
+    notifyListeners();
+  }
+
+  void toggleInterest(String interest) {
+    if (selectedInterests.contains(interest)) {
+      selectedInterests.remove(interest);
+    } else {
+      selectedInterests.add(interest);
     }
     notifyListeners();
   }
