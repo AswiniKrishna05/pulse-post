@@ -23,8 +23,13 @@ class AppRouter {
       case AppRoutes.forgotPassword:
         return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
       case AppRoutes.otp:
-        final email = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => OTPVerificationView(email: email));
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => OTPVerificationView(
+            phoneNumber: args['phoneNumber'],
+            verificationId: args['verificationId'],
+          ),
+        );
       case AppRoutes.resetPassword:
         final email = settings.arguments as String;
         return MaterialPageRoute(builder: (_) => ResetPasswordView(email: email));

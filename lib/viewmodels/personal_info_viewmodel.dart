@@ -47,6 +47,12 @@ class PersonalInfoViewModel extends ChangeNotifier {
   Set<String> regionalAndCultural = {};
   Set<String> wellbeingAndAwareness = {};
 
+  // Phone OTP state
+  bool isOtpSent = false;
+  bool isPhoneVerified = false;
+  String otpCode = '';
+  String? verificationId;
+
   void pickImage(ImageSource source) async {
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: source);
@@ -287,6 +293,50 @@ class PersonalInfoViewModel extends ChangeNotifier {
       }
     } catch (e) {
       print('Location error: $e');
+    }
+  }
+
+  Future<void> sendOtp(String phoneNumber, BuildContext context) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      timeout: const Duration(seconds: 60),
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        isPhoneVerified = true;
+        notifyListeners();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Phone verified automatically!')));
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Verification failed:  ${e.message}')));
+      },
+      codeSent: (String vId, int? resendToken) {
+        verificationId = vId;
+        isOtpSent = true;
+        notifyListeners();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('OTP sent!')));
+      },
+      codeAutoRetrievalTimeout: (String vId) {
+        verificationId = vId;
+      },
+    );
+  }
+
+  Future<void> verifyOtp(String smsCode, BuildContext context) async {
+    if (verificationId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('No verification ID.')));
+      return;
+    }
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId!,
+        smsCode: smsCode,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      isPhoneVerified = true;
+      notifyListeners();
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Phone verified!')));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid OTP: $e')));
     }
   }
 }

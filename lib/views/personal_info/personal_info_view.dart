@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../core/navigation/app_routes.dart';
 import '../../viewmodels/personal_info_viewmodel.dart';
+import '../auth/otp_verification_view.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/primary_button.dart';
 import 'interests_categories_view.dart';
@@ -97,9 +98,55 @@ class PersonalInfoView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  ElevatedButton(onPressed: () {}, child: const Text('Send OTP')),
+                  ElevatedButton(
+                    onPressed: vm.mobile.isNotEmpty && !vm.isPhoneVerified
+                        ? () async {
+                            await vm.sendOtp('+91${vm.mobile}', context);
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => OTPVerificationView(
+                                  phoneNumber: '+91${vm.mobile}',
+                                  verificationId: vm.verificationId,
+                                ),
+                              ),
+                            );
+                            if (result == true) {
+                              vm.isPhoneVerified = true;
+                              vm.notifyListeners();
+                            }
+                          }
+                        : null,
+                    child: Text(vm.isPhoneVerified ? 'OTP Verified' : (vm.isOtpSent ? 'Resend OTP' : 'Send OTP')),
+                  ),
+                  if (vm.isPhoneVerified)
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Icon(Icons.verified, color: Colors.green),
+                    ),
                 ],
               ),
+              if (vm.isOtpSent && !vm.isPhoneVerified) ...[
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextField(
+                        label: 'Enter OTP',
+                        hint: '6-digit code',
+                        onChanged: (val) => vm.otpCode = val,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: vm.otpCode.length == 6
+                          ? () => vm.verifyOtp(vm.otpCode, context)
+                          : null,
+                      child: const Text('Verify OTP'),
+                    ),
+                  ],
+                ),
+              ],
               const SizedBox(height: 16),
               CustomTextField(
                 label: 'Password',
