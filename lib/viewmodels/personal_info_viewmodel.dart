@@ -33,6 +33,12 @@ class PersonalInfoViewModel extends ChangeNotifier {
   }
 
   Future<void> saveProfileToFirestore(BuildContext context) async {
+    if (age < 16) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("You must be at least 16 years old to register.")),
+      );
+      return;
+    }
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) {
       ScaffoldMessenger.of(context).showSnackBar(
