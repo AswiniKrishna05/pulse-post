@@ -96,6 +96,20 @@ class PersonalInfoView extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
+              CustomTextField(
+                label: 'Password',
+                hint: 'Enter password',
+                obscure: true,
+                onChanged: (val) => vm.updateField('password', val),
+              ),
+              const SizedBox(height: 16),
+              CustomTextField(
+                label: 'Confirm Password',
+                hint: 'Re-enter password',
+                obscure: true,
+                onChanged: (val) => vm.updateField('confirmPassword', val),
+              ),
+              const SizedBox(height: 16),
 
               GestureDetector(
                 onTap: () async {
@@ -248,7 +262,6 @@ class PersonalInfoView extends StatelessWidget {
                     label: 'Please specify',
                     hint: 'Enter your qualification',
                     onChanged: (val) => vm.updateField('customQualification', val),
-                    initialValue: vm.customQualification,
                   ),
                 ),
               const SizedBox(height: 16),
@@ -274,13 +287,30 @@ class PersonalInfoView extends StatelessWidget {
               const SizedBox(height: 24),
 
               // ✅ Continue Button
-              SizedBox(
-                width: double.infinity,
-                child: PrimaryButton(
-                  text: 'Continue',
-                  onPressed: () => vm.saveProfileToFirestore(context),
+              GestureDetector(
+                onTap: () {
+                  if (vm.isFormValid) {
+                    vm.saveToFirestore(context);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please fill all required fields correctly.'),
+                      ),
+                    );
+                  }
+                },
+                child: AbsorbPointer(
+                  absorbing: !vm.isFormValid,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: PrimaryButton(
+                      text: 'Continue',
+                      onPressed: vm.isFormValid ? () => vm.saveToFirestore(context) : null,
+                    ),
+                  ),
                 ),
               ),
+
               const SizedBox(height: 32),
             ],
           ),
