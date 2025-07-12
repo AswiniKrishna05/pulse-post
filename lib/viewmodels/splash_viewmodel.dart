@@ -17,15 +17,19 @@ class SplashViewModel extends ChangeNotifier {
       final isCompletedInfo = data['isCompletedInfo'] == true;
       final isProfileComplete = data['isProfileComplete'] == true;
 
-      if (!isCompletedInfo) {
-        Navigator.pushReplacementNamed(context, AppRoutes.signupPersonal);
-      } else if (!isProfileComplete) {
-        Navigator.pushReplacementNamed(context, AppRoutes.socialFollow);
-      } else {
-        Navigator.pushReplacementNamed(context, AppRoutes.home);
-      }
+    //   if (!isCompletedInfo) {
+    //     Navigator.pushReplacementNamed(context, AppRoutes.signupPersonal);
+    //   } else if (!isProfileComplete) {
+    //     Navigator.pushReplacementNamed(context, AppRoutes.socialFollow);
+    //   } else {
+    //     Navigator.pushReplacementNamed(context, AppRoutes.home);
+    //   }
+    // } else {
+    //   Navigator.pushReplacementNamed(context, AppRoutes.register);
+    // }
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
     } else {
-      Navigator.pushReplacementNamed(context, AppRoutes.register);
-    }
+        Navigator.pushReplacementNamed(context, AppRoutes.signupPersonal);
+      }
   }
 }

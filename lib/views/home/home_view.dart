@@ -22,7 +22,7 @@ class HomeView extends StatelessWidget {
               await FirebaseAuth.instance.signOut();
 
               //Navigate to login screen
-              Navigator.pushReplacementNamed(context, AppRoutes.login);
+              Navigator.pushReplacementNamed(context, AppRoutes.signupPersonal);
             },
           ),
         ],

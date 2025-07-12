@@ -13,4 +13,14 @@ class AppStrings {
   static const logIn = 'Log In';
   static const dontHaveAccount = "Don't have an account?";
   static const register = 'Register';
+
+//personal info
+  static const String signUp = 'Sign Up';
+  static const String createAccount = 'Create Account';
+  static const String takePhoto = 'Take Photo';
+  static const String chooseFromGallery = 'Choose from Gallery';
+  static const String fullName = 'Full Name';
+  static const String enterFullName = 'Enter your Full Name';
+
+
 }

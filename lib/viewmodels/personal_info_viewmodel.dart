@@ -233,14 +233,14 @@ class PersonalInfoViewModel extends ChangeNotifier {
     if (status.isDenied) {
       final result = await Permission.location.request();
       if (result.isGranted) {
-        print('✅ Location permission granted');
+        print('Location permission granted');
       } else if (result.isPermanentlyDenied) {
         openAppSettings(); // redirect to settings
       } else {
-        print('❌ Location permission denied');
+        print(' Location permission denied');
       }
     } else if (status.isGranted) {
-      print('✅ Already granted');
+      print(' Already granted');
     }
   }
 

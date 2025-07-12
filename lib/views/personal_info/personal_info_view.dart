@@ -2,6 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import '../../core/constants/app_strings.dart';
 import '../../core/navigation/app_routes.dart';
 import '../../viewmodels/personal_info_viewmodel.dart';
 import '../auth/otp_verification_view.dart';
@@ -24,14 +25,16 @@ class PersonalInfoView extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
+      appBar: AppBar(title: const Text(AppStrings.signUp
+      )),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Create Account', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text(AppStrings.createAccount
+                  , style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
 
               Center(
@@ -45,7 +48,8 @@ class PersonalInfoView extends StatelessWidget {
                           children: [
                             ListTile(
                               leading: const Icon(Icons.camera_alt),
-                              title: const Text("Take Photo"),
+                              title: const Text(AppStrings.takePhoto
+                              ),
                               onTap: () {
                                 Navigator.pop(context);
                                 vm.pickImage(ImageSource.camera);
@@ -53,7 +57,8 @@ class PersonalInfoView extends StatelessWidget {
                             ),
                             ListTile(
                               leading: const Icon(Icons.photo),
-                              title: const Text("Choose from Gallery"),
+                              title: const Text(AppStrings.chooseFromGallery
+                              ),
                               onTap: () {
                                 Navigator.pop(context);
                                 vm.pickImage(ImageSource.gallery);
@@ -75,8 +80,10 @@ class PersonalInfoView extends StatelessWidget {
               const SizedBox(height: 24),
 
               CustomTextField(
-                label: 'Full Name',
-                hint: 'Enter your Full Name',
+                label: AppStrings.fullName
+                ,
+                hint: AppStrings.enterFullName
+                ,
                 onChanged: (val) => vm.updateField('fullName', val),
               ),
               const SizedBox(height: 16),
@@ -317,7 +324,7 @@ class PersonalInfoView extends StatelessWidget {
 
               CustomTextField(
                 label: 'Occupation',
-                hint: 'Select Occupation',
+                hint: 'Occupation',
                 onChanged: (val) => vm.updateField('occupation', val),
               ),
               const SizedBox(height: 24),
