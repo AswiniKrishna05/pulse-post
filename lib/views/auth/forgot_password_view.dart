@@ -23,7 +23,7 @@ class ForgotPasswordView extends StatelessWidget {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              Image.asset('assets/images/forgot_password.png', height: 200),
+              Image.asset('assets/images/ziyalogo.jpeg', height: 200),
               const SizedBox(height: 20),
               const Text(
                 'AppStrings.forgotPassword',
