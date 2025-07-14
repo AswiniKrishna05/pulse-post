@@ -222,7 +222,7 @@ class PersonalInfoViewModel extends ChangeNotifier {
 
       await FirebaseFirestore.instance.collection('users').doc(uid).set(userModel.toMap());
 
-      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (_) => false);
+      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login, (_) => false);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
     }

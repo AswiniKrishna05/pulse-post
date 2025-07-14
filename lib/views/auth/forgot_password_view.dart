@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/constants/app_strings.dart';
 import '../../viewmodels/forgot_password_viewmodel.dart';
 
 class ForgotPasswordView extends StatelessWidget {
@@ -11,7 +12,7 @@ class ForgotPasswordView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Forgot password'),
+        title: const Text(AppStrings.forgotPassword),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -25,12 +26,12 @@ class ForgotPasswordView extends StatelessWidget {
               Image.asset('assets/images/forgot_password.png', height: 200),
               const SizedBox(height: 20),
               const Text(
-                'Forgot password',
+                'AppStrings.forgotPassword',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text(
-                'Enter your email address below to reset password.',
+                'AppStrings.resetPasswordInstruction',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
@@ -40,8 +41,8 @@ class ForgotPasswordView extends StatelessWidget {
                 onChanged: vm.updateEmail,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
-                  labelText: 'Email Address',
-                  hintText: 'Enter email address',
+                  labelText: 'AppStrings.emailAddress',
+                  hintText: 'AppStrings.enterEmailAddress',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -54,7 +55,7 @@ class ForgotPasswordView extends StatelessWidget {
                   onPressed: vm.isLoading ? null : () => vm.sendOtpToEmail(context),
                   child: vm.isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Verify email address'),
+                      : const Text('AppStrings.verifyEmailAddress'),
                 ),
               ),
             ],

@@ -28,7 +28,7 @@ class _SplashViewState extends State<SplashView> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              "assets/images/pulse_logo.jpeg",
+              "assets/images/ziyalogo.jpeg",
               width: 150,
               height: 150,
             ),

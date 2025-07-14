@@ -47,10 +47,10 @@ class LoginViewModel extends ChangeNotifier {
       final isProfileComplete = data['isProfileComplete'] == true;
 
       if (!isCompletedInfo) {
-        Navigator.pushReplacementNamed(context, AppRoutes.signupPersonal);
-      } else if (!isProfileComplete) {
-        Navigator.pushReplacementNamed(context, AppRoutes.socialFollow);
-      } else {
+      //   Navigator.pushReplacementNamed(context, AppRoutes.signupPersonal);
+      // } else if (!isProfileComplete) {
+      //   Navigator.pushReplacementNamed(context, AppRoutes.socialFollow);
+      // } else {
         Navigator.pushReplacementNamed(context, AppRoutes.home);
       }
     } catch (e) {

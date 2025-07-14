@@ -19,7 +19,7 @@ class LoginView extends StatelessWidget {
             padding: const EdgeInsets.all(24.0),
             child: Column(
               children: [
-                Image.asset('assets/images/pulse_logo.jpeg', height: 120),
+                Image.asset('assets/images/ziyalogo.jpeg', height: 120),
                 const SizedBox(height: 16),
                 const Text('Login Now', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),

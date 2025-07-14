@@ -18,7 +18,7 @@ class OTPVerificationViewModel extends ChangeNotifier {
 
   Future<void> verifyOtp(BuildContext context) async {
     if (otpCode.length != 4) {
-      _show(context, "Please enter the 4-digit OTP  ${otpCode.length}");
+      _show(context, 'Please enter the 4-digit OTP');
       return;
     }
     isLoading = true;

@@ -22,12 +22,21 @@ class ForgotPasswordViewModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    await Future.delayed(const Duration(seconds: 2));
-    // Mock: Always succeed
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('OTP sent to your email (mock).')),
-    );
-    Navigator.pushNamed(context, AppRoutes.otp, arguments: email);
+    try {
+      final result = await FirebaseFunctions.instance
+          .httpsCallable('sendOtpForForgotPassword')
+          .call({'email': email});
+
+      if (result.data['success'] == true) {
+        Navigator.pushNamed(context, AppRoutes.otp, arguments: email);
+      } else {
+        throw Exception("OTP send failed");
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error sending OTP: \\${e.toString()}')),
+      );
+    }
 
     isLoading = false;
     notifyListeners();
