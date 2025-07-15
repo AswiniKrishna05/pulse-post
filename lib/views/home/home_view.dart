@@ -57,46 +57,48 @@ class HomeView extends StatelessWidget {
       ),
       body: vm.isLoading
           ? const HomeShimmerSkeleton()
-          : Column(
-              children: [
-                BannerSection(),
-                GreetingCard(userName: vm.username),
-                StatusCard(
-                  balance: vm.balance,
-                  credits: vm.credits,
-                  tasksCompleted: vm.tasksCompleted,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _HomeActionButton(
-                        icon: Icons.assignment,
-                        label: 'View Task',
-                        onTap: () {},
-                      ),
-                      _HomeActionButton(
-                        icon: Icons.group_add,
-                        label: 'Invite & Earn',
-                        onTap: () {},
-                      ),
-                      _HomeActionButton(
-                        icon: Icons.account_balance_wallet,
-                        label: 'Wallet',
-                        onTap: () {},
-                      ),
-                      _HomeActionButton(
-                        icon: Icons.history,
-                        label: 'Task History',
-                        onTap: () {},
-                      ),
-                    ],
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  BannerSection(),
+                  GreetingCard(userName: vm.username),
+                  StatusCard(
+                    balance: vm.balance,
+                    credits: vm.credits,
+                    tasksCompleted: vm.tasksCompleted,
                   ),
-                ),
-                const SizedBox(height: 16),
-                BottomBannerSection(),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _HomeActionButton(
+                          icon: Icons.assignment,
+                          label: 'View Task',
+                          onTap: () {},
+                        ),
+                        _HomeActionButton(
+                          icon: Icons.group_add,
+                          label: 'Invite & Earn',
+                          onTap: () {},
+                        ),
+                        _HomeActionButton(
+                          icon: Icons.account_balance_wallet,
+                          label: 'Wallet',
+                          onTap: () {},
+                        ),
+                        _HomeActionButton(
+                          icon: Icons.history,
+                          label: 'Task History',
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  BottomBannerSection(),
+                ],
+              ),
             ),
     );
   }

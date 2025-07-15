@@ -10,6 +10,7 @@ import 'package:ziya_project/viewmodels/register_viewmodel.dart';
 import 'package:ziya_project/viewmodels/reset_password_viewmodel.dart';
 import 'package:ziya_project/viewmodels/splash_viewmodel.dart';
 import 'package:ziya_project/viewmodels/social_follow_viewmodel.dart';
+import 'package:ziya_project/viewmodels/district_viewmodel.dart';
 import 'package:ziya_project/views/auth/forgot_password_view.dart';
 import 'package:ziya_project/views/auth/login_view.dart';
 import 'package:ziya_project/views/auth/otp_verification_view.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider(create: (_) => DistrictViewModel()),
           ChangeNotifierProvider(create: (_)=> SplashViewModel()),
           ChangeNotifierProvider(create: (_)=> LoginViewModel()),
           ChangeNotifierProvider(create: (_) => ResetPasswordViewModel()),
