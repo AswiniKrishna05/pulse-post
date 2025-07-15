@@ -44,6 +44,14 @@ class MyApp extends StatelessWidget {
       title: 'Pulse Post',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black),
+          titleTextStyle: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
+          elevation: 1,
+        ),
+        cardColor: Colors.white,
       ),
       initialRoute: AppRoutes.splash,
       onGenerateRoute: AppRouter.generateRoute,

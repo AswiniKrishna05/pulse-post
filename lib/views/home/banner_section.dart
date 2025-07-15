@@ -6,11 +6,11 @@ class BannerSection extends StatelessWidget {
   final List<Map<String, String>> banners = [
     {
       'image': 'assets/images/flutter.png',
-      'url': 'https://ziyaacademy.com/flutter-internship'
+      'url': 'https://flutter.dev/'
     },
     {
       'image': 'assets/images/python.webp',
-      'url': 'https://ziyaacademy.com/python-internship'
+      'url': 'https://www.python.org/'
     },
     // Add more banners as needed
   ];
