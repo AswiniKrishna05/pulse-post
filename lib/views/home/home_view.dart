@@ -8,6 +8,7 @@ import 'banner_section.dart';
 import 'greeting_card.dart';
 import 'status_card.dart';
 import 'bottom_banner_section.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -15,6 +16,15 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<HomeViewModel>(context);
+
+    // Start a timer to remove shimmer after 2 seconds
+    if (vm.isLoading) {
+      Future.delayed(const Duration(seconds: 2), () {
+        if (vm.isLoading) {
+          vm.setLoading(false);
+        }
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -32,49 +42,69 @@ class HomeView extends StatelessWidget {
               // TODO: Profile action
             },
           ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              // Sign out from Firebase
+              await FirebaseAuth.instance.signOut();
+              // Navigate to login or splash screen
+              Navigator.pushReplacementNamed(context, AppRoutes.signupPersonal);
+            },
+            tooltip: 'Logout',
+          ),
         ],
       ),
-      body: Column(
-        children: [
-          BannerSection(),
-          GreetingCard(userName: vm.username),
-          StatusCard(
-            balance: vm.balance,
-            credits: vm.credits,
-            tasksCompleted: vm.tasksCompleted,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: vm.isLoading
+          ? Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: Colors.white,
+              ),
+            )
+          : Column(
               children: [
-                _HomeActionButton(
-                  icon: Icons.assignment,
-                  label: 'View Task',
-                  onTap: () {},
+                BannerSection(),
+                GreetingCard(userName: vm.username),
+                StatusCard(
+                  balance: vm.balance,
+                  credits: vm.credits,
+                  tasksCompleted: vm.tasksCompleted,
                 ),
-                _HomeActionButton(
-                  icon: Icons.group_add,
-                  label: 'Invite & Earn',
-                  onTap: () {},
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _HomeActionButton(
+                        icon: Icons.assignment,
+                        label: 'View Task',
+                        onTap: () {},
+                      ),
+                      _HomeActionButton(
+                        icon: Icons.group_add,
+                        label: 'Invite & Earn',
+                        onTap: () {},
+                      ),
+                      _HomeActionButton(
+                        icon: Icons.account_balance_wallet,
+                        label: 'Wallet',
+                        onTap: () {},
+                      ),
+                      _HomeActionButton(
+                        icon: Icons.history,
+                        label: 'Task History',
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
                 ),
-                _HomeActionButton(
-                  icon: Icons.account_balance_wallet,
-                  label: 'Wallet',
-                  onTap: () {},
-                ),
-                _HomeActionButton(
-                  icon: Icons.history,
-                  label: 'Task History',
-                  onTap: () {},
-                ),
+                const SizedBox(height: 16),
+                BottomBannerSection(),
               ],
             ),
-          ),
-          const SizedBox(height: 16),
-          BottomBannerSection(),
-        ],
-      ),
     );
   }
 }
