@@ -9,6 +9,7 @@ import 'greeting_card.dart';
 import 'status_card.dart';
 import 'bottom_banner_section.dart';
 import 'package:shimmer/shimmer.dart';
+import 'home_shimmer_skeleton.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -55,15 +56,7 @@ class HomeView extends StatelessWidget {
         ],
       ),
       body: vm.isLoading
-          ? Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                color: Colors.white,
-              ),
-            )
+          ? const HomeShimmerSkeleton()
           : Column(
               children: [
                 BannerSection(),
