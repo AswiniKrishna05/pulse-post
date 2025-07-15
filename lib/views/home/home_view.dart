@@ -5,6 +5,7 @@ import '../../viewmodels/home_viewmodel.dart';
 import '../../core/navigation/app_routes.dart'; // ⬅️ If you're using named routes
 import 'banner_section.dart';
 import 'greeting_card.dart';
+import 'status_card.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -33,13 +34,13 @@ class HomeView extends StatelessWidget {
         children: [
           BannerSection(),
           GreetingCard(userName: vm.username),
-          const SizedBox(height: 16),
-          Center(
-            child: Text(
-              'Welcome, ${vm.username}!',
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
+          StatusCard(
+            balance: vm.balance,
+            credits: vm.credits,
+            tasksCompleted: vm.tasksCompleted,
           ),
+          const SizedBox(height: 16),
+          // Removed the Center widget with welcome message
         ],
       ),
     );
