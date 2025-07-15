@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart'; // ⬅️ Import Firebase Aut
 import 'package:provider/provider.dart';
 import '../../viewmodels/home_viewmodel.dart';
 import '../../core/navigation/app_routes.dart'; // ⬅️ If you're using named routes
+import 'banner_section.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -27,11 +28,17 @@ class HomeView extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Text(
-          'Welcome, ${vm.username}!',
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
+      body: Column(
+        children: [
+          BannerSection(),
+          const SizedBox(height: 16),
+          Center(
+            child: Text(
+              'Welcome, ${vm.username}!',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
       ),
     );
   }
