@@ -18,6 +18,7 @@ class GreetingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 4,
@@ -29,7 +30,7 @@ class GreetingCard extends StatelessWidget {
             const SizedBox(width: 16),
             Expanded(
               child: Text(
-                ' [${getGreeting()}, $userName!]',
+                '${getGreeting()}, $userName!',
                 style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
               ),
             ),
