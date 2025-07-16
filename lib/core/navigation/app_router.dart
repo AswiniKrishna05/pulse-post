@@ -10,6 +10,7 @@ import '../../views/auth/register_view.dart';
 import '../../views/splash/splash_view.dart';
 import '../../views/home/social_follow_view.dart';
 import 'app_routes.dart';
+import '../../views/auth/forgot_password_otp_view.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -23,15 +24,12 @@ class AppRouter {
       case AppRoutes.forgotPassword:
         return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
       case AppRoutes.otp:
-        final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
-          builder: (_) => OTPVerificationView(
-            phoneNumber: args['phoneNumber'],
-            verificationId: args['verificationId'],
-          ),
+          builder: (_) => const ForgotPasswordOtpView(),
         );
       case AppRoutes.resetPassword:
-        final email = settings.arguments as String;
+        final args = settings.arguments as Map<String, dynamic>?;
+        final email = args?['email'] as String? ?? '';
         return MaterialPageRoute(builder: (_) => ResetPasswordView(email: email));
       case AppRoutes.passwordResetSuccess:
         return MaterialPageRoute(builder: (_) => const PasswordResetSuccessView());

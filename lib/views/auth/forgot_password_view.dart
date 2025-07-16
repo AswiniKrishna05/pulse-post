@@ -1,65 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../core/constants/app_strings.dart';
-import '../../viewmodels/forgot_password_viewmodel.dart';
 
-class ForgotPasswordView extends StatelessWidget {
-  const ForgotPasswordView({super.key});
+class ForgotPasswordView extends StatefulWidget {
+  const ForgotPasswordView({Key? key}) : super(key: key);
+
+  @override
+  State<ForgotPasswordView> createState() => _ForgotPasswordViewState();
+}
+
+class _ForgotPasswordViewState extends State<ForgotPasswordView> {
+  final TextEditingController _emailController = TextEditingController();
+  bool _isLoading = false;
+
+  void _sendOtp() {
+    final email = _emailController.text.trim();
+    if (email.isEmpty || !email.contains('@')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid email address')),
+      );
+      return;
+    }
+    setState(() {
+      _isLoading = true;
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('OTP sent to your email (use 123456)')),
+      );
+      Navigator.pushNamed(context, '/otp', arguments: {'email': email});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final vm = Provider.of<ForgotPasswordViewModel>(context);
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(AppStrings.forgotPassword),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            children: [
-              Image.asset('assets/images/ziyalogo.jpeg', height: 200),
-              const SizedBox(height: 20),
-              const Text(
-                'AppStrings.forgotPassword',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      appBar: AppBar(title: const Text('Forgot Password')),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            TextField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                labelText: 'Email Address',
+                hintText: 'Enter your registered email',
+                border: OutlineInputBorder(),
               ),
-              const SizedBox(height: 8),
-              const Text(
-                'AppStrings.resetPasswordInstruction',
-                textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _isLoading ? null : _sendOtp,
+                child: _isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text('Send OTP'),
               ),
-              const SizedBox(height: 24),
-
-              // Email TextField
-              TextField(
-                onChanged: vm.updateEmail,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'AppStrings.emailAddress',
-                  hintText: 'AppStrings.enterEmailAddress',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // Send OTP Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: vm.isLoading ? null : () => vm.sendOtpToEmail(context),
-                  child: vm.isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('AppStrings.verifyEmailAddress'),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -11,6 +11,7 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final String? prefixText;
+  final Color? borderColor;
 
   const CustomTextField({
     super.key,
@@ -24,6 +25,7 @@ class CustomTextField extends StatefulWidget {
     this.controller,
     this.keyboardType,
     this.prefixText,
+    this.borderColor,
   });
 
   @override
@@ -56,7 +58,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
       decoration: InputDecoration(
         labelText: widget.label,
         hintText: widget.hint,
-        border: const OutlineInputBorder(),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: widget.borderColor ?? Colors.grey,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: widget.borderColor ?? Theme.of(context).colorScheme.primary,
+            width: 2.0,
+          ),
+        ),
         prefixText: widget.prefixText,
         suffixIcon: widget.obscure
             ? IconButton(

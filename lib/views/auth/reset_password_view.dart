@@ -25,6 +25,24 @@ class ResetPasswordView extends StatelessWidget {
               suffixIcon: vm.isObscureNew ? Icons.visibility : Icons.visibility_off,
               onToggleVisibility: vm.toggleNewPasswordVisibility,
               onChanged: vm.updateNewPassword,
+              borderColor: vm.showPasswordMismatchError ? Colors.red : null,
+            ),
+            // Password strength meter
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 4.0),
+                child: Text(
+                  'Strength: ${vm.passwordStrength}',
+                  style: TextStyle(
+                    color: vm.passwordStrength == 'Strong'
+                        ? Colors.green
+                        : vm.passwordStrength == 'Medium'
+                            ? Colors.orange
+                            : Colors.red,
+                  ),
+                ),
+              ),
             ),
             const SizedBox(height: 16),
             CustomTextField(
@@ -34,6 +52,7 @@ class ResetPasswordView extends StatelessWidget {
               suffixIcon: vm.isObscureConfirm ? Icons.visibility : Icons.visibility_off,
               onToggleVisibility: vm.toggleConfirmPasswordVisibility,
               onChanged: vm.updateConfirmPassword,
+              borderColor: vm.showPasswordMismatchError ? Colors.red : null,
             ),
             const SizedBox(height: 24),
             PrimaryButton(
