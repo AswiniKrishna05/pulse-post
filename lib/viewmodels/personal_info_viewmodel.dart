@@ -69,28 +69,37 @@ class PersonalInfoViewModel extends ChangeNotifier {
   }
 
   String? getPasswordErrorMessage() {
+    List<String> errors = [];
     if (password.isEmpty || confirmPassword.isEmpty) return null;
     if (password != confirmPassword) {
       showPasswordMismatchError = true;
-      return 'Passwords do not match. Please enter correctly';
+      errors.add('Passwords do not match. Please enter correctly');
     } else {
       showPasswordMismatchError = false;
     }
     if (!password.contains(RegExp(r'[A-Z]'))) {
       showPasswordCapitalError = true;
-      return 'Please add at least one capital letter';
+      errors.add('Please add at least one capital letter');
     } else {
       showPasswordCapitalError = false;
     }
     if (!password.contains(RegExp(r'[&@#]'))) {
       showPasswordSpecialCharError = true;
-      return 'Password must include at least one special character: & @ #';
+      errors.add('Password must include at least one special character: & @ #');
     } else {
       showPasswordSpecialCharError = false;
     }
     if (password.length < 6) {
-      return 'Password must be at least 6 characters long';
+      errors.add('Password must be at least 6 characters long');
     }
+    if (errors.isEmpty) return null;
+    return errors.join('\n');
+  }
+
+  String? getPhoneNumberError() {
+    if (mobile.isEmpty) return 'Phone number is required';
+    if (!RegExp(r'^[0-9]+$').hasMatch(mobile)) return 'Phone number must be numeric';
+    if (mobile.length != 10) return 'Phone number must be 10 digits';
     return null;
   }
 

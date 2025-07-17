@@ -20,10 +20,15 @@ class PersonalInfoView extends StatefulWidget {
 
 class _PersonalInfoViewState extends State<PersonalInfoView> {
   Timer? _confirmPasswordTimer;
+  bool _phoneDirty = false;
+  bool _passwordDirty = false;
+  Timer? _passwordStrengthTimer;
+  bool _showPasswordStrength = false;
 
   @override
   void dispose() {
     _confirmPasswordTimer?.cancel();
+    _passwordStrengthTimer?.cancel();
     super.dispose();
   }
 
@@ -104,24 +109,44 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                 label: AppStrings.email,
                 hint: AppStrings.enterEmail,
                 onChanged: (val) => vm.updateField('email', val),
+                keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
 
               Row(
                 children: [
                   Expanded(
-                    child: CustomTextField(
-                      label: AppStrings.mobileNumber
-                      ,
-                      hint: AppStrings.enterNumber
-                      ,
-                      onChanged: (val) => vm.updateField(AppStrings.mobile
-                          , val),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomTextField(
+                          label: AppStrings.mobileNumber,
+                          hint: AppStrings.enterNumber,
+                          onChanged: (val) {
+                            if (!_phoneDirty) {
+                              setState(() {
+                                _phoneDirty = true;
+                              });
+                            }
+                            vm.updateField('mobile', val);
+                          },
+                          borderColor: _phoneDirty && vm.getPhoneNumberError() != null ? Colors.red : null,
+                          keyboardType: TextInputType.number,
+                        ),
+                        if (_phoneDirty && vm.getPhoneNumberError() != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0, left: 8.0),
+                            child: Text(
+                              vm.getPhoneNumberError()!,
+                              style: TextStyle(color: Colors.red, fontSize: 12),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 8),
                   ElevatedButton(
-                    onPressed: vm.mobile.isNotEmpty && !vm.isPhoneVerified
+                    onPressed: vm.getPhoneNumberError() == null && vm.mobile.isNotEmpty && !vm.isPhoneVerified
                         ? () async {
                             await vm.sendOtp('+91${vm.mobile}', context);
                             final result = await Navigator.push(
@@ -181,6 +206,11 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                 hint: AppStrings.enterPassword,
                 obscure: true,
                 onChanged: (val) {
+                  if (!_passwordDirty) {
+                    setState(() {
+                      _passwordDirty = true;
+                    });
+                  }
                   vm.updateField('password', val);
                   final error = vm.getPasswordErrorMessage();
                   if (error != null) {
@@ -188,9 +218,41 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                       SnackBar(content: Text(error)),
                     );
                   }
+                  _passwordStrengthTimer?.cancel();
+                  setState(() {
+                    _showPasswordStrength = false;
+                  });
+                  _passwordStrengthTimer = Timer(const Duration(seconds: 1), () {
+                    if (mounted) {
+                      setState(() {
+                        _showPasswordStrength = true;
+                      });
+                    }
+                  });
                 },
                 borderColor: vm.showPasswordMismatchError || vm.showPasswordCapitalError || vm.showPasswordSpecialCharError ? Colors.red : null,
               ),
+              if (_passwordDirty && _showPasswordStrength)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0, left: 8.0, bottom: 8.0),
+                  child: Row(
+                    children: [
+                      Text('Strength: ', style: TextStyle(fontSize: 12)),
+                      Text(
+                        vm.passwordStrength,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: vm.passwordStrength == 'Strong'
+                              ? Colors.green
+                              : vm.passwordStrength == 'Medium'
+                                  ? Colors.orange
+                                  : Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               const SizedBox(height: 16),
               CustomTextField(
                 label: AppStrings.confirmPassword,
