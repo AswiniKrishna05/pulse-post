@@ -27,7 +27,7 @@ class GreetingCard extends StatelessWidget {
           const SizedBox(width: 16),
           Expanded(
             child: Text(
-              '${getGreeting()}, \n$userName!',
+              '${getGreeting()}, $userName!',
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,

@@ -132,7 +132,9 @@ class BottomBannerSection extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 12),
               indicatorBackgroundColor: Colors.grey.shade300,
               currentIndicatorColor: Colors.blueAccent,
+              indicatorRadius: 4.0,
             ),
+
             slideBuilder: (index) {
               final banner = banners[index];
               return GestureDetector(

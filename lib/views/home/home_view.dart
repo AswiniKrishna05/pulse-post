@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../core/constants/app_strings.dart';
 import '../../viewmodels/home_viewmodel.dart';
 import '../../core/navigation/app_routes.dart'; 
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'banner_section.dart';
 import 'greeting_card.dart';
@@ -12,8 +13,32 @@ import 'bottom_banner_section.dart';
 import 'package:shimmer/shimmer.dart';
 import 'home_shimmer_skeleton.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    _fetchAndSetUserName();
+  }
+
+  Future<void> _fetchAndSetUserName() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        final name = doc.data()?['fullName'] ?? 'Pulse User';
+        if (mounted) {
+          Provider.of<HomeViewModel>(context, listen: false).setUsername(name);
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -112,7 +112,10 @@ class LoginViewModel extends ChangeNotifier {
         smsCode: otp,
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
-      Navigator.pushReplacementNamed(context, AppRoutes.home);
+      Navigator.pushReplacementNamed(context, AppRoutes.socialFollow);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login successful')),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('OTP verification failed: ${e.toString()}')),
@@ -133,20 +136,10 @@ class LoginViewModel extends ChangeNotifier {
         password: password,
       );
 
-      final uid = FirebaseAuth.instance.currentUser?.uid;
-      final doc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      final data = doc.data() ?? {};
-
-      final isCompletedInfo = data['isCompletedInfo'] == true;
-      final isProfileComplete = data['isProfileComplete'] == true;
-
-      if (!isCompletedInfo) {
-      //   Navigator.pushReplacementNamed(context, AppRoutes.signupPersonal);
-      // } else if (!isProfileComplete) {
-      //   Navigator.pushReplacementNamed(context, AppRoutes.socialFollow);
-      // } else {
-        Navigator.pushReplacementNamed(context, AppRoutes.home);
-      }
+      Navigator.pushReplacementNamed(context, AppRoutes.socialFollow);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login successful')),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
