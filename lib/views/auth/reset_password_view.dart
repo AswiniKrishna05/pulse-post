@@ -3,10 +3,26 @@ import 'package:provider/provider.dart';
 import '../../viewmodels/reset_password_viewmodel.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/primary_button.dart';
+import 'dart:async';
 
-class ResetPasswordView extends StatelessWidget {
+class ResetPasswordView extends StatefulWidget {
   final String email;
   const ResetPasswordView({super.key, required this.email});
+
+  @override
+  State<ResetPasswordView> createState() => _ResetPasswordViewState();
+}
+
+class _ResetPasswordViewState extends State<ResetPasswordView> {
+  bool _passwordDirty = false;
+  Timer? _passwordStrengthTimer;
+  bool _showPasswordStrength = false;
+
+  @override
+  void dispose() {
+    _passwordStrengthTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,26 +40,44 @@ class ResetPasswordView extends StatelessWidget {
               obscure: vm.isObscureNew,
               suffixIcon: vm.isObscureNew ? Icons.visibility : Icons.visibility_off,
               onToggleVisibility: vm.toggleNewPasswordVisibility,
-              onChanged: vm.updateNewPassword,
+              onChanged: (val) {
+                if (!_passwordDirty) {
+                  setState(() {
+                    _passwordDirty = true;
+                  });
+                }
+                vm.updateNewPassword(val);
+                _passwordStrengthTimer?.cancel();
+                setState(() {
+                  _showPasswordStrength = false;
+                });
+                _passwordStrengthTimer = Timer(const Duration(seconds: 1), () {
+                  if (mounted) {
+                    setState(() {
+                      _showPasswordStrength = true;
+                    });
+                  }
+                });
+              },
               borderColor: vm.showPasswordMismatchError ? Colors.red : null,
             ),
-            // Password strength meter
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 4.0),
-                child: Text(
-                  'Strength: ${vm.passwordStrength}',
-                  style: TextStyle(
-                    color: vm.passwordStrength == 'Strong'
-                        ? Colors.green
-                        : vm.passwordStrength == 'Medium'
-                            ? Colors.orange
-                            : Colors.red,
+            if (_passwordDirty && _showPasswordStrength)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0, left: 4.0),
+                  child: Text(
+                    'Strength: ${vm.passwordStrength}',
+                    style: TextStyle(
+                      color: vm.passwordStrength == 'Strong'
+                          ? Colors.green
+                          : vm.passwordStrength == 'Medium'
+                              ? Colors.orange
+                              : Colors.red,
+                    ),
                   ),
                 ),
               ),
-            ),
             const SizedBox(height: 16),
             CustomTextField(
               label: 'Confirm Password',
@@ -58,7 +92,7 @@ class ResetPasswordView extends StatelessWidget {
             PrimaryButton(
               text: 'Reset Password',
               isLoading: vm.isLoading,
-              onPressed: () => vm.resetPassword(context, email),
+              onPressed: () => vm.resetPassword(context, widget.email),
             ),
           ],
         ),
