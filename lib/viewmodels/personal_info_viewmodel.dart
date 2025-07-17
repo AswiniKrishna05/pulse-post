@@ -53,6 +53,47 @@ class PersonalInfoViewModel extends ChangeNotifier {
   String otpCode = '';
   String? verificationId;
 
+  // Password validation state
+  bool showPasswordMismatchError = false;
+  bool showPasswordCapitalError = false;
+  bool showPasswordSpecialCharError = false;
+
+  String get passwordStrength {
+    if (password.length < 6) return 'Weak';
+    final hasUpper = password.contains(RegExp(r'[A-Z]'));
+    final hasSpecial = password.contains(RegExp(r'[&@#]'));
+    final hasNumber = password.contains(RegExp(r'[0-9]'));
+    if (hasUpper && hasSpecial && hasNumber && password.length >= 8) return 'Strong';
+    if ((hasUpper || hasSpecial) && password.length >= 6) return 'Medium';
+    return 'Weak';
+  }
+
+  String? getPasswordErrorMessage() {
+    if (password.isEmpty || confirmPassword.isEmpty) return null;
+    if (password != confirmPassword) {
+      showPasswordMismatchError = true;
+      return 'Passwords do not match. Please enter correctly';
+    } else {
+      showPasswordMismatchError = false;
+    }
+    if (!password.contains(RegExp(r'[A-Z]'))) {
+      showPasswordCapitalError = true;
+      return 'Please add at least one capital letter';
+    } else {
+      showPasswordCapitalError = false;
+    }
+    if (!password.contains(RegExp(r'[&@#]'))) {
+      showPasswordSpecialCharError = true;
+      return 'Password must include at least one special character: & @ #';
+    } else {
+      showPasswordSpecialCharError = false;
+    }
+    if (password.length < 6) {
+      return 'Password must be at least 6 characters long';
+    }
+    return null;
+  }
+
   void pickImage(ImageSource source) async {
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: source);

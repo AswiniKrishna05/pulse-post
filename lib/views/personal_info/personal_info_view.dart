@@ -9,9 +9,23 @@ import '../auth/otp_verification_view.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/primary_button.dart';
 import 'interests_categories_view.dart';
+import 'dart:async';
 
-class PersonalInfoView extends StatelessWidget {
+class PersonalInfoView extends StatefulWidget {
   const PersonalInfoView({super.key});
+
+  @override
+  State<PersonalInfoView> createState() => _PersonalInfoViewState();
+}
+
+class _PersonalInfoViewState extends State<PersonalInfoView> {
+  Timer? _confirmPasswordTimer;
+
+  @override
+  void dispose() {
+    _confirmPasswordTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,20 +94,16 @@ class PersonalInfoView extends StatelessWidget {
               const SizedBox(height: 24),
 
               CustomTextField(
-                label: AppStrings.fullName
-                ,
-                hint: AppStrings.enterFullName
-                ,
-                onChanged: (val) => vm.updateField(AppStrings.fullName, val),
+                label: AppStrings.fullName,
+                hint: AppStrings.enterFullName,
+                onChanged: (val) => vm.updateField('fullName', val),
               ),
               const SizedBox(height: 16),
 
               CustomTextField(
-                label: AppStrings.email
-                ,
-                hint: AppStrings.enterEmail
-                ,
-                onChanged: (val) => vm.updateField(AppStrings.email, val),
+                label: AppStrings.email,
+                hint: AppStrings.enterEmail,
+                onChanged: (val) => vm.updateField('email', val),
               ),
               const SizedBox(height: 16),
 
@@ -167,23 +177,38 @@ class PersonalInfoView extends StatelessWidget {
               ],
               const SizedBox(height: 16),
               CustomTextField(
-                label: AppStrings.password
-                ,
-                hint: AppStrings.enterPassword
-                ,
+                label: AppStrings.password,
+                hint: AppStrings.enterPassword,
                 obscure: true,
-                onChanged: (val) => vm.updateField(AppStrings.password
-                    , val),
+                onChanged: (val) {
+                  vm.updateField('password', val);
+                  final error = vm.getPasswordErrorMessage();
+                  if (error != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(error)),
+                    );
+                  }
+                },
+                borderColor: vm.showPasswordMismatchError || vm.showPasswordCapitalError || vm.showPasswordSpecialCharError ? Colors.red : null,
               ),
               const SizedBox(height: 16),
               CustomTextField(
-                label: AppStrings.confirmPassword
-                ,
-                hint: AppStrings.reEnterPassword
-                ,
+                label: AppStrings.confirmPassword,
+                hint: AppStrings.reEnterPassword,
                 obscure: true,
-                onChanged: (val) => vm.updateField(AppStrings.confirmPassword
-                    , val),
+                onChanged: (val) {
+                  vm.updateField('confirmPassword', val);
+                  _confirmPasswordTimer?.cancel();
+                  _confirmPasswordTimer = Timer(const Duration(seconds: 2), () {
+                    final error = vm.getPasswordErrorMessage();
+                    if (error != null && error.contains('Passwords do not match')) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(error)),
+                      );
+                    }
+                  });
+                },
+                borderColor: vm.showPasswordMismatchError ? Colors.red : null,
               ),
               const SizedBox(height: 16),
 
