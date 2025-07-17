@@ -1,8 +1,15 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class BannerSection extends StatelessWidget {
+class BannerSection extends StatefulWidget {
+  const BannerSection({super.key});
+
+  @override
+  State<BannerSection> createState() => _BannerSectionState();
+}
+
+class _BannerSectionState extends State<BannerSection> {
   final List<Map<String, String>> banners = [
     {
       'image': 'assets/images/flutter.png',
@@ -12,10 +19,9 @@ class BannerSection extends StatelessWidget {
       'image': 'assets/images/python.webp',
       'url': 'https://www.python.org/'
     },
-    // Add more banners as needed
   ];
 
-  BannerSection({super.key});
+  int current = 0;
 
   void _launchURL(String url) async {
     final uri = Uri.parse(url);
@@ -26,32 +32,70 @@ class BannerSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 160,
-      child: CarouselSlider.builder(
-        slideBuilder: (index) {
-          final banner = banners[index];
-          return GestureDetector(
-            onTap: () => _launchURL(banner['url']!),
+    return CarouselSlider.builder(
+      itemCount: banners.length,
+      options: CarouselOptions(
+        height: 160,
+        enlargeCenterPage: true,
+        enlargeStrategy: CenterPageEnlargeStrategy.scale,
+        viewportFraction: 0.75,
+        autoPlay: true,
+        onPageChanged: (index, reason) {
+          setState(() {
+            current = index;
+          });
+        },
+      ),
+      itemBuilder: (context, index, realIndex) {
+        final banner = banners[index];
+        return GestureDetector(
+          onTap: () => _launchURL(banner['url']!),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 6,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                banner['image']!,
-                fit: BoxFit.cover,
-                width: double.infinity,
+              borderRadius: BorderRadius.circular(20),
+              child: Stack(
+                children: [
+                  Image.asset(
+                    banner['image']!,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: 20,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.black.withOpacity(0.1),
+                            Colors.transparent
+                          ],
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          );
-        },
-        itemCount: banners.length,
-        enableAutoSlider: true,
-        unlimitedMode: true,
-        slideTransform: const DefaultTransform(),
-        slideIndicator: CircularSlideIndicator(
-          padding: EdgeInsets.only(bottom: 8),
-        ),
-        viewportFraction: 0.9,
-      ),
+          ),
+        );
+      },
     );
   }
-} 
+}

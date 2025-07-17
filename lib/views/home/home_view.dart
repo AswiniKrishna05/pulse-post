@@ -64,6 +64,7 @@ class HomeView extends StatelessWidget {
               child: Column(
                 children: [
                   BannerSection(),
+                  const SizedBox(height: 10),
                   GreetingCard(userName: vm.username),
                   StatusCard(
                     balance: vm.balance,
@@ -124,22 +125,29 @@ class _HomeActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const Color color = Colors.blueAccent;
+
     return Column(
       children: [
-        Ink(
-          decoration: const ShapeDecoration(
-            color: Colors.blue,
-            shape: CircleBorder(),
-          ),
-          child: IconButton(
-            icon: Icon(icon, color: Colors.white),
-            onPressed: onTap,
-            iconSize: 32,
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: color.withOpacity(0.3)),
+            ),
+            child: Icon(icon, size: 32, color: color),
           ),
         ),
-        const SizedBox(height: 4),
-        Text(label, style: const TextStyle(fontSize: 12)),
+        const SizedBox(height: 6),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12, color: Colors.black87),
+        ),
       ],
     );
   }
 }
+

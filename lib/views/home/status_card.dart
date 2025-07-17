@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../core/constants/app_strings.dart';
 
 class StatusCard extends StatelessWidget {
@@ -16,42 +15,51 @@ class StatusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
+    const Color color = Colors.blueAccent;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: color.withOpacity(0.3)),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildStatusColumn(AppStrings.validBalance
-                , balance),
-            _buildStatusColumn(AppStrings.totalCredits
-                , credits),
-            _buildStatusColumn(AppStrings.taskCompleted
-                , tasksCompleted),
+            _buildStatusItem(AppStrings.validBalance, balance, color),
+            _buildStatusItem(AppStrings.totalCredits, credits, color),
+            _buildStatusItem(AppStrings.taskCompleted, tasksCompleted, color),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildStatusColumn(String label, int value) {
+  Widget _buildStatusItem(String label, int value, Color color) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           value.toString(),
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
         ),
         const SizedBox(height: 4),
         Text(
           label,
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.black87,
+          ),
         ),
       ],
     );
   }
-} 
+}

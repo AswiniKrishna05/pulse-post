@@ -11,36 +11,31 @@ class GreetingCard extends StatelessWidget {
     if (hour < 12) {
       return AppStrings.goodMorning;
     } else if (hour < 17) {
-      return AppStrings.goodAfternoon
-      ;
+      return AppStrings.goodAfternoon;
     } else {
-      return AppStrings.goodEvening
-      ;
+      return AppStrings.goodEvening;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          children: [
-            Icon(Icons.wb_sunny, size: 40, color: Colors.orange),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Text(
-                '${getGreeting()}, $userName!',
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        children: [
+          const Icon(Icons.wb_sunny, size: 40, color: Colors.orange),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              '${getGreeting()}, \n$userName!',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
-} 
+}
