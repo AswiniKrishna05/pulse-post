@@ -14,7 +14,7 @@ import 'package:ziya_project/viewmodels/district_viewmodel.dart';
 import 'package:ziya_project/views/auth/forgot_password_view.dart';
 import 'package:ziya_project/views/auth/login_view.dart';
 import 'package:ziya_project/views/auth/otp_verification_view.dart';
-import 'package:ziya_project/views/splash/splash_view.dart';
+import 'package:ziya_project/views/auth/splash_view.dart';
 
 import 'core/navigation/app_router.dart';
 import 'core/navigation/app_routes.dart';

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/constants/app_strings.dart';
+
 class GreetingCard extends StatelessWidget {
   final String userName;
   const GreetingCard({super.key, required this.userName});
@@ -7,11 +9,13 @@ class GreetingCard extends StatelessWidget {
   String getGreeting() {
     final hour = DateTime.now().hour;
     if (hour < 12) {
-      return 'Good Morning';
+      return AppStrings.goodMorning;
     } else if (hour < 17) {
-      return 'Good Afternoon';
+      return AppStrings.goodAfternoon
+      ;
     } else {
-      return 'Good Evening';
+      return AppStrings.goodEvening
+      ;
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; 
 import 'package:provider/provider.dart';
+import '../../core/constants/app_strings.dart';
 import '../../viewmodels/home_viewmodel.dart';
 import '../../core/navigation/app_routes.dart'; 
 
@@ -29,18 +30,19 @@ class HomeView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text(AppStrings.home
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications),
             onPressed: () {
-              // TODO: Notification action
+              // Notification action
             },
           ),
           IconButton(
             icon: const Icon(Icons.account_circle),
             onPressed: () {
-              // TODO: Profile action
+              // Profile action
             },
           ),
           IconButton(
@@ -51,7 +53,8 @@ class HomeView extends StatelessWidget {
               // Navigate to login or splash screen
               Navigator.pushReplacementNamed(context, AppRoutes.signupPersonal);
             },
-            tooltip: 'Logout',
+            tooltip: AppStrings.logout
+            ,
           ),
         ],
       ),
@@ -74,22 +77,26 @@ class HomeView extends StatelessWidget {
                       children: [
                         _HomeActionButton(
                           icon: Icons.assignment,
-                          label: 'View Task',
+                          label: AppStrings.viewTask
+                          ,
                           onTap: () {},
                         ),
                         _HomeActionButton(
                           icon: Icons.group_add,
-                          label: 'Invite & Earn',
+                          label:AppStrings.inviteAndEarn
+                          ,
                           onTap: () {},
                         ),
                         _HomeActionButton(
                           icon: Icons.account_balance_wallet,
-                          label: 'Wallet',
+                          label: AppStrings.wallet
+                          ,
                           onTap: () {},
                         ),
                         _HomeActionButton(
                           icon: Icons.history,
-                          label: 'Task History',
+                          label: AppStrings.taskHistory
+                          ,
                           onTap: () {},
                         ),
                       ],

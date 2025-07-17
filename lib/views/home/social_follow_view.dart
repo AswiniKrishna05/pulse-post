@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../core/constants/app_strings.dart';
 import '../../core/navigation/app_routes.dart';
 import '../../viewmodels/social_follow_viewmodel.dart';
 import '../widgets/social_follow_card.dart';
@@ -32,7 +33,7 @@ class SocialFollowView extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     const Text(
-                      'To get started, please follow us on the platforms below. This helps you stay informed and get priority in tasks.',
+                      AppStrings.followInstruction,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 15),
                     ),
@@ -43,7 +44,8 @@ class SocialFollowView extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Progress'),
+                            const Text(AppStrings.progress
+                            ),
                             Text('${vm.progress}/4'),
                           ],
                         ),
@@ -63,34 +65,45 @@ class SocialFollowView extends StatelessWidget {
                      SocialCard(
                       icon: FontAwesomeIcons.facebookF,
                       color: Colors.blue,
-                      title: 'Facebook',
-                      subtitle: 'Follow us on Facebook',
+                      title: AppStrings.facebook
+                       ,
+                      subtitle: AppStrings.followOnFacebook
+                       ,
                       index: 0,
-                      buttonText: "I've Followed",
+                      buttonText: AppStrings.iveFollowed
+                       ,
                     ),
                      SocialCard(
                       icon: FontAwesomeIcons.instagram,
                       color: Colors.purple,
-                      title: 'Instagram',
-                      subtitle: 'Follow us on Instagram',
+                      title: AppStrings.instagram
+                       ,
+                      subtitle: AppStrings.followOnInstagram
+                       ,
                       index: 1,
-                      buttonText: "I've Followed",
+                      buttonText:AppStrings.iveFollowed,
                     ),
                      SocialCard(
                       icon: FontAwesomeIcons.youtube,
                       color: Colors.red,
-                      title: 'YouTube',
-                      subtitle: 'Subscribe to our YouTube',
+                      title: AppStrings.youtube
+                       ,
+                      subtitle: AppStrings.subscribeToYoutube
+                       ,
                       index: 2,
-                      buttonText: "I've Subscribed",
+                      buttonText: AppStrings.iveSubscribed
+                       ,
                     ),
                      SocialCard(
                       icon: FontAwesomeIcons.whatsapp,
                       color: Colors.green,
-                      title: 'WhatsApp',
-                      subtitle: 'Join our WhatsApp Broadcast',
+                      title: AppStrings.whatsapp
+                       ,
+                      subtitle: AppStrings.joinWhatsappBroadcast
+                       ,
                       index: 3,
-                      buttonText: "I've Joined",
+                      buttonText: AppStrings.iveJoined
+                       ,
                     ),
                     const SizedBox(height: 24),
                     // Minimal test buttons for debugging
@@ -101,28 +114,34 @@ class SocialFollowView extends StatelessWidget {
                         if (uid != null) {
                           try {
                             await FirebaseFirestore.instance
-                                .collection('users')
+                                .collection(AppStrings.users
+                            )
                                 .doc(uid)
-                                .update({'isProfileComplete': true});
+                                .update({AppStrings.isProfileComplete
+                                : true});
 
-                            print('Marked isProfileComplete = true in Firestore');
+                            print(AppStrings.markedProfileComplete
+                            );
                           } catch (e) {
                             print('Failed to update isProfileComplete: $e');
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Something went wrong. Please try again.')),
+                              const SnackBar(content: Text(AppStrings.somethingWentWrong
+                              )),
                             );
                             return;
                           }
                         }
 
-                        print('Navigating to home...');
+                        print(AppStrings.navigatingToHome
+                        );
                         Navigator.pushReplacementNamed(context, AppRoutes.home);
                       }
                           : null,
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 48),
                       ),
-                      child: const Text('Complete all follows to continue'),
+                      child: const Text(AppStrings.completeAllFollows
+                      ),
                     ),
 
                     const SizedBox(height: 24),

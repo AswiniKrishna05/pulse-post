@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/constants/app_strings.dart';
+
 class StatusCard extends StatelessWidget {
   final int balance;
   final int credits;
@@ -24,9 +26,12 @@ class StatusCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildStatusColumn('Valid Balance', balance),
-            _buildStatusColumn('Total Credits', credits),
-            _buildStatusColumn('Task Completed', tasksCompleted),
+            _buildStatusColumn(AppStrings.validBalance
+                , balance),
+            _buildStatusColumn(AppStrings.totalCredits
+                , credits),
+            _buildStatusColumn(AppStrings.taskCompleted
+                , tasksCompleted),
           ],
         ),
       ),

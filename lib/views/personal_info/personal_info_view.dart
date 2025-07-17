@@ -84,14 +84,16 @@ class PersonalInfoView extends StatelessWidget {
                 ,
                 hint: AppStrings.enterFullName
                 ,
-                onChanged: (val) => vm.updateField('fullName', val),
+                onChanged: (val) => vm.updateField(AppStrings.fullName, val),
               ),
               const SizedBox(height: 16),
 
               CustomTextField(
-                label: 'Email',
-                hint: 'Enter email',
-                onChanged: (val) => vm.updateField('email', val),
+                label: AppStrings.email
+                ,
+                hint: AppStrings.enterEmail
+                ,
+                onChanged: (val) => vm.updateField(AppStrings.email, val),
               ),
               const SizedBox(height: 16),
 
@@ -99,9 +101,12 @@ class PersonalInfoView extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomTextField(
-                      label: 'Mobile Number',
-                      hint: 'Enter number',
-                      onChanged: (val) => vm.updateField('mobile', val),
+                      label: AppStrings.mobileNumber
+                      ,
+                      hint: AppStrings.enterNumber
+                      ,
+                      onChanged: (val) => vm.updateField(AppStrings.mobile
+                          , val),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -124,7 +129,10 @@ class PersonalInfoView extends StatelessWidget {
                             }
                           }
                         : null,
-                    child: Text(vm.isPhoneVerified ? 'OTP Verified' : (vm.isOtpSent ? 'Resend OTP' : 'Send OTP')),
+                    child: Text(vm.isPhoneVerified ? AppStrings.otpVerified
+                        : (vm.isOtpSent ? AppStrings.resendOtp
+                        : AppStrings.sendOtp
+                    )),
                   ),
                   if (vm.isPhoneVerified)
                     const Padding(
@@ -139,8 +147,10 @@ class PersonalInfoView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: CustomTextField(
-                        label: 'Enter OTP',
-                        hint: '6-digit code',
+                        label:AppStrings.enterOtp
+                        ,
+                        hint: AppStrings.sixDigitCode
+                        ,
                         onChanged: (val) => vm.otpCode = val,
                       ),
                     ),
@@ -149,24 +159,31 @@ class PersonalInfoView extends StatelessWidget {
                       onPressed: vm.otpCode.length == 6
                           ? () => vm.verifyOtp(vm.otpCode, context)
                           : null,
-                      child: const Text('Verify OTP'),
+                      child: const Text(AppStrings.verifyOtp
+                      ),
                     ),
                   ],
                 ),
               ],
               const SizedBox(height: 16),
               CustomTextField(
-                label: 'Password',
-                hint: 'Enter password',
+                label: AppStrings.password
+                ,
+                hint: AppStrings.enterPassword
+                ,
                 obscure: true,
-                onChanged: (val) => vm.updateField('password', val),
+                onChanged: (val) => vm.updateField(AppStrings.password
+                    , val),
               ),
               const SizedBox(height: 16),
               CustomTextField(
-                label: 'Confirm Password',
-                hint: 'Re-enter password',
+                label: AppStrings.confirmPassword
+                ,
+                hint: AppStrings.reEnterPassword
+                ,
                 obscure: true,
-                onChanged: (val) => vm.updateField('confirmPassword', val),
+                onChanged: (val) => vm.updateField(AppStrings.confirmPassword
+                    , val),
               ),
               const SizedBox(height: 16),
 
@@ -182,7 +199,8 @@ class PersonalInfoView extends StatelessWidget {
                 },
                 child: InputDecorator(
                   decoration: const InputDecoration(
-                    labelText: 'Date of Birth',
+                    labelText: AppStrings.dateOfBirth
+                    ,
                     border: OutlineInputBorder(),
                   ),
                   child: Column(
@@ -199,27 +217,28 @@ class PersonalInfoView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              const Text('Gender', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(AppStrings.gender
+                  , style: TextStyle(fontWeight: FontWeight.bold)),
               Row(
                 children: [
                   Radio<String>(
-                    value: 'Male',
+                    value: AppStrings.male,
                     groupValue: vm.gender,
-                    onChanged: (value) => vm.updateField('gender', value!),
+                    onChanged: (value) => vm.updateField(AppStrings.genderKey, value!),
                   ),
-                  const Text('Male'),
+                  const Text(AppStrings.male),
                   Radio<String>(
-                    value: 'Female',
+                    value: AppStrings.female,
                     groupValue: vm.gender,
-                    onChanged: (value) => vm.updateField('gender', value!),
+                    onChanged: (value) => vm.updateField(AppStrings.genderKey, value!),
                   ),
-                  const Text('Female'),
+                  const Text(AppStrings.female),
                   Radio<String>(
-                    value: 'Other',
+                    value: AppStrings.other,
                     groupValue: vm.gender,
-                    onChanged: (value) => vm.updateField('gender', value!),
+                    onChanged: (value) => vm.updateField(AppStrings.genderKey, value!),
                   ),
-                  const Text('Other'),
+                  const Text(AppStrings.other),
                 ],
               ),
               const SizedBox(height: 16),
@@ -233,17 +252,20 @@ class PersonalInfoView extends StatelessWidget {
                           context: context,
                           showPhoneCode: false,
                           onSelect: (Country country) {
-                            vm.updateField('country', country.name);
+                            vm.updateField(AppStrings.country
+                                , country.name);
                           },
                         );
                       },
                       child: InputDecorator(
                         decoration: const InputDecoration(
-                          labelText: 'Country',
+                          labelText: AppStrings.country
+                          ,
                           border: OutlineInputBorder(),
                         ),
                         child: Text(
-                          vm.country.isNotEmpty ? vm.country : 'Select your country',
+                          vm.country.isNotEmpty ? vm.country : AppStrings.selectYourCountry
+                          ,
                           style: const TextStyle(fontSize: 16),
                         ),
                       ),
@@ -253,7 +275,8 @@ class PersonalInfoView extends StatelessWidget {
                   Expanded(
                     child: DropdownButtonFormField<String>(
                       value: vm.state.isNotEmpty ? vm.state : null,
-                      decoration: const InputDecoration(labelText: 'State', border: OutlineInputBorder()),
+                      decoration: const InputDecoration(labelText: AppStrings.state
+                          , border: OutlineInputBorder()),
                       items: const [
                         DropdownMenuItem(value: 'Kerala', child: Text('Kerala')),
                         DropdownMenuItem(value: 'Maharashtra', child: Text('Maharashtra')),
@@ -270,10 +293,12 @@ class PersonalInfoView extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomTextField(
-                      label: 'City',
-                      hint: 'Enter City',
+                      label: AppStrings.city
+                      ,
+                      hint: AppStrings.enterCity
+                      ,
                       controller: vm.cityController,
-                      onChanged: (val) => vm.updateField('city', val),
+                      onChanged: (val) => vm.updateField(AppStrings.city, val),
                     ),
                   ),
                   const SizedBox(width: 8),

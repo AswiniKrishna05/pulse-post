@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/constants/app_strings.dart';
 import '../../viewmodels/personal_info_viewmodel.dart';
 
 class InterestsCategoriesView extends StatelessWidget {
@@ -14,150 +15,194 @@ class InterestsCategoriesView extends StatelessWidget {
       children: [
         buildCategoryChips(
           context: context,
-          title: 'Education',
+          title: AppStrings.education
+          ,
           selected: vm.education,
           options: [
-            'NIOS',
-            'Online Learning',
-            'School Life',
-            'College Students',
-            'Tuition & Coaching',
-            'Skill Development',
-            'Competitive Exams (NEET, UPSC, SSC)',
-            'Spoken English',
-            'Study Abroad'
+            AppStrings.nios
+            ,
+            AppStrings.onlineLearning
+            ,
+            AppStrings.schoolLife
+            ,
+            AppStrings.collegeStudents
+            ,
+            AppStrings.tuitionAndCoaching
+            ,
+            AppStrings.skillDevelopment
+            ,
+            AppStrings.competitiveExams
+            ,
+            AppStrings.spokenEnglish
+            ,
+            AppStrings.studyAbroad
+
           ],
-          categoryKey: 'education',
+          categoryKey: AppStrings.educationKey
+          ,
         ),
         buildCategoryChips(
           context: context,
-          title: 'Technology',
+          title: AppStrings.technology
+          ,
           selected: vm.technology,
           options: [
-            'Smartphones',
-            'Mobile Apps',
-            'Gadgets',
-            'Internet Tips',
-            'Digital Payments',
-            'AI & ChatGPT',
-            'Coding / Programming',
-            'Web Development',
-            'Ethical Hacking'
+            AppStrings.smartphones
+            ,
+            AppStrings.mobileApps
+            ,
+            AppStrings.gadgets
+            ,
+            AppStrings.internetTips
+            ,
+            AppStrings.digitalPayments
+            ,
+            AppStrings.aiAndChatgpt
+            ,
+            AppStrings.codingProgramming
+            ,
+            AppStrings.webDevelopment
+            ,
+            AppStrings.ethicalHacking
+
           ],
-          categoryKey: 'technology',
+          categoryKey:AppStrings.technologyKey
+          ,
         ),
         buildCategoryChips(
           context: context,
-          title: 'Lifestyle',
+          title:AppStrings.lifestyle
+          ,
           selected: vm.lifestyle,
           options: [
-            'Travel',
-            'Fashion',
-            'Health & Fitness',
-            'Beauty & Makeup',
-            'Food & Cooking',
-            'Photography',
-            'Parenting',
-            'Journaling',
-            'Minimalism'
+            AppStrings.travel
+            ,
+            AppStrings.fashion
+            ,
+            AppStrings.healthAndFitness
+            ,
+            AppStrings.beautyAndMakeup
+            ,
+            AppStrings.foodAndCooking
+            ,
+            AppStrings.photography
+            ,
+            AppStrings.parenting
+            ,
+            AppStrings.journaling
+            ,
+            AppStrings.minimalism
+
           ],
           categoryKey: 'lifestyle',
         ),
         buildCategoryChips(
           context: context,
-          title: 'Entertainment',
+          title: AppStrings.entertainment
+          ,
           selected: vm.entertainment,
           options: [
-            'Gaming (Mobile/PC/Console)',
-            'Anime',
-            'Cartoons',
-            'Memes & Funny Videos',
-            'Movies',
-            'TV Shows',
-            'Stand-up Comedy',
-            'Music & Singing',
-            'Dance & Reels'
+            AppStrings.gaming,
+            AppStrings.anime,
+            AppStrings.cartoons,
+            AppStrings.memes,
+            AppStrings.movies,
+            AppStrings.tvShows,
+            AppStrings.standUpComedy,
+            AppStrings.music,
+            AppStrings.dance,
+
           ],
           categoryKey: 'entertainment',
         ),
         buildCategoryChips(
           context: context,
-          title: 'Career & Money',
+          title: AppStrings.careerAndMoney
+          ,
           selected: vm.careerAndMoney,
           options: [
-            'Government Jobs',
-            'Part-time Jobs',
-            'Freelancing',
-            'Internships',
-            'Work From Home',
-            'Side Hustles',
-            'Resume Building',
-            'Business Ideas',
-            'Investment & Savings'
+            AppStrings.governmentJobs,
+            AppStrings.partTimeJobs,
+            AppStrings.freelancing,
+            AppStrings.internships,
+            AppStrings.workFromHome,
+            AppStrings.sideHustles,
+            AppStrings.resumeBuilding,
+            AppStrings.businessIdeas,
+            AppStrings.investmentAndSavings
+
           ],
           categoryKey: 'careerAndMoney',
         ),
         buildCategoryChips(
           context: context,
-          title: 'Social Media',
+          title: AppStrings.socialMedia
+          ,
           selected: vm.socialMedia,
           options: [
-            'WhatsApp Status',
-            'YouTube Shorts / Vlogs',
-            'Instagram Reels',
-            'TikTok (if regionally used)',
-            'Snapchat Content',
-            'ShareChat Content',
-            'Influencer Marketing',
-            'Affiliate Marketing',
-            'Blogging & Vlogging'
+            AppStrings.whatsappStatus,
+            AppStrings.youtubeShortsVlogs,
+            AppStrings.instagramReels,
+            AppStrings.tiktok,
+            AppStrings.snapchatContent,
+            AppStrings.sharechatContent,
+            AppStrings.influencerMarketing,
+            AppStrings.affiliateMarketing,
+            AppStrings.bloggingVlogging,
+
           ],
           categoryKey: 'socialMedia',
         ),
         buildCategoryChips(
           context: context,
-          title: 'Personal Growth',
+          title: AppStrings.personalGrowth
+          ,
           selected: vm.personalGrowth,
           options: [
-            'Motivation',
-            'Time Management',
-            'Goal Setting',
-            'Self-Discipline',
-            'Public Speaking',
-            'Meditation / Mindfulness',
-            'Productivity Tools',
-            'Reading / Book Summaries'
+            AppStrings.motivation,
+            AppStrings.timeManagement,
+            AppStrings.goalSetting,
+            AppStrings.selfDiscipline,
+            AppStrings.publicSpeaking,
+            AppStrings.meditationMindfulness,
+            AppStrings.productivityTools,
+            AppStrings.readingBookSummaries,
+
           ],
           categoryKey: 'personalGrowth',
         ),
         buildCategoryChips(
           context: context,
-          title: 'Regional & Cultural',
+          title: AppStrings.regionalAndCultural
+          ,
           selected: vm.regionalAndCultural,
           options: [
-            'Malayalam Content',
-            'Tamil Content',
-            'Hindi Content',
-            'Kerala Local News',
-            'Tamil Nadu Updates',
-            'Indian Culture & Festivals',
-            'Village Life',
-            'Art & Handicrafts'
+            AppStrings.malayalamContent,
+            AppStrings.tamilContent,
+            AppStrings.hindiContent,
+            AppStrings.keralaLocalNews,
+            AppStrings.tamilNaduUpdates,
+            AppStrings.indianCultureFestivals,
+            AppStrings.villageLife,
+            AppStrings.artHandicrafts
+
           ],
           categoryKey: 'regionalAndCultural',
         ),
         buildCategoryChips(
           context: context,
-          title: 'Wellbeing & Awareness',
+          title: AppStrings.wellbeingAndAwareness
+          ,
           selected: vm.wellbeingAndAwareness,
           options: [
-            'Mental Health',
-            'Physical Wellness',
-            'Clean Living',
-            "Women's Health",
-            'Youth Guidance',
-            'Toxic Parenting Awareness',
-            'Study Motivation'
+            AppStrings.mentalHealth,
+            AppStrings.physicalWellness,
+            AppStrings.cleanLiving,
+            AppStrings.womensHealth,
+            AppStrings.youthGuidance,
+            AppStrings.toxicParentingAwareness,
+            AppStrings.studyMotivation
+
           ],
           categoryKey: 'wellbeingAndAwareness',
         ),

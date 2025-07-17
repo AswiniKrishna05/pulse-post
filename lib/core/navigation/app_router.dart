@@ -7,7 +7,7 @@ import '../../views/auth/login_view.dart';
 import '../../views/auth/otp_verification_view.dart';
 import '../../views/personal_info/personal_info_view.dart';
 import '../../views/auth/register_view.dart';
-import '../../views/splash/splash_view.dart';
+import '../../views/auth/splash_view.dart';
 import '../../views/home/social_follow_view.dart';
 import 'app_routes.dart';
 import '../../views/auth/forgot_password_otp_view.dart';
