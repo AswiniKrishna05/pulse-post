@@ -1,4 +1,5 @@
 class AppStrings {
+
   static const forgotPassword = 'Forgot Password';
   static const resetPasswordInstruction = 'Enter your email address below to reset password.';
   static const emailAddress = 'Email Address';
@@ -46,8 +47,6 @@ class AppStrings {
   static const String state = 'State';
   static const String city = 'City';
   static const String enterCity = 'Enter City';
-
-
 
 
 //Home
@@ -131,6 +130,7 @@ class AppStrings {
   static const String music = 'Music & Singing';
   static const String dance = 'Dance & Reels';
   static const String careerAndMoney = 'Career & Money';
+
 // Career & Money Subcategories
   static const String governmentJobs = 'Government Jobs';
   static const String partTimeJobs = 'Part-time Jobs';
@@ -142,6 +142,7 @@ class AppStrings {
   static const String businessIdeas = 'Business Ideas';
   static const String investmentAndSavings = 'Investment & Savings';
   static const String socialMedia = 'Social Media';
+
 // Social Media Subcategories
   static const String whatsappStatus = 'WhatsApp Status';
   static const String youtubeShortsVlogs = 'YouTube Shorts / Vlogs';
@@ -153,6 +154,7 @@ class AppStrings {
   static const String affiliateMarketing = 'Affiliate Marketing';
   static const String bloggingVlogging = 'Blogging & Vlogging';
   static const String personalGrowth = 'Personal Growth';
+
 // Personal Growth Subcategories
   static const String motivation = 'Motivation';
   static const String timeManagement = 'Time Management';
@@ -163,6 +165,7 @@ class AppStrings {
   static const String productivityTools = 'Productivity Tools';
   static const String readingBookSummaries = 'Reading / Book Summaries';
   static const String regionalAndCultural = 'Regional & Cultural';
+
 // Regional & Cultural Subcategories
   static const String malayalamContent = 'Malayalam Content';
   static const String tamilContent = 'Tamil Content';
@@ -173,6 +176,7 @@ class AppStrings {
   static const String villageLife = 'Village Life';
   static const String artHandicrafts = 'Art & Handicrafts';
   static const String wellbeingAndAwareness = 'Wellbeing & Awareness';
+
 // Wellbeing & Awareness Subcategories
   static const String mentalHealth = 'Mental Health';
   static const String physicalWellness = 'Physical Wellness';
@@ -181,5 +185,62 @@ class AppStrings {
   static const String youthGuidance = 'Youth Guidance';
   static const String toxicParentingAwareness = 'Toxic Parenting Awareness';
   static const String studyMotivation = 'Study Motivation';
+
+
+//distric_viewmodel
+  static const String thiruvananthapuram = 'Thiruvananthapuram';
+  static const String kollam = 'Kollam';
+  static const String pathanamthitta = 'Pathanamthitta';
+  static const String alappuzha = 'Alappuzha';
+  static const String kottayam = 'Kottayam';
+  static const String idukki = 'Idukki';
+  static const String ernakulam = 'Ernakulam';
+  static const String thrissur = 'Thrissur';
+  static const String palakkad = 'Palakkad';
+  static const String malappuram = 'Malappuram';
+  static const String kozhikode = 'Kozhikode';
+  static const String wayanad = 'Wayanad';
+  static const String kannur = 'Kannur';
+  static const String kasaragod = 'Kasaragod';
+//auth
+  static const String invalidEmail = 'Please enter a valid email address';
+  static const String atSymbol = '@';
+  static const String sendOtpForForgotPassword = 'sendOtpForForgotPassword';
+  static const String success = 'success';
+  static const String otpSendFailed = 'OTP send failed';
+  static const String pulseUser = 'Pulse User';
+  static const String enterPhoneNumber = 'Please enter your phone number';
+  static const String otpSentToPhone = 'OTP sent to your phone';
+  static const String loginSuccess = 'Login successful';
+  static const String loginSuccessful = 'Login successful';
+  static const String enterFourDigitOtp = 'Please enter the 4-digit OTP';
+  static const String sampleOtp = '1234';
+  static const String otpVerifiedSetPassword = 'OTP verified! Please set your new password.';
+  static const String incorrectOtp = 'Incorrect OTP';
+  static const String otpResentToEmailMock = 'OTP resent to email. (Mock)';
+  static const String passwordTooShort = 'Password must be at least 6 characters.';
+  static const String passwordResetSuccess = 'Password reset successful!';
+  static const String passwordStrengthWeak = 'Weak';
+  static const String passwordStrengthStrong = 'Strong';
+  static const String passwordStrengthMedium = 'Medium';
+  static const String passwordsDoNotMatch = 'Passwords do not match. Please enter correctly';
+  static const String addOneCapitalLetter = 'Please add at least one capital letter';
+  static const String passwordNeedsSpecialChar = 'Password must include at least one special character: & @ #';
+  static const String passwordMinLength = 'Password must be at least 6 characters long';
+  static const String phoneNumberRequired = 'Phone number is required';
+  static const String phoneNumberMustBeNumeric = 'Phone number must be numeric';
+  static const String phoneNumberLengthError = 'Phone number must be 10 digits';
+  static const String ageValidationError = 'You must be at least 16 years old';
+  static const String pinCode = 'Pin Code';
+  static const String qualification = 'Qualification';
+  static const String occupation = 'Occupation';
+  static const String atLeastOneInterest = 'At least one interest';
+  static const String passwords = 'Passwords';
+  static const String youMust = 'You must';
+  static const String pleaseCorrect = 'Please correct: ';
+
+  //splash
+  static const String isCompletedInfo = 'isCompletedInfo';
+
 
 }

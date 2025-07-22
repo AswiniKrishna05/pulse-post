@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import '../core/constants/app_strings.dart';
 import '../core/navigation/app_routes.dart';
 
 class ForgotPasswordViewModel extends ChangeNotifier {
@@ -12,9 +13,10 @@ class ForgotPasswordViewModel extends ChangeNotifier {
   }
 
   Future<void> sendOtpToEmail(BuildContext context) async {
-    if (email.isEmpty || !email.contains('@')) {
+    if (email.isEmpty || !email.contains(AppStrings.atSymbol
+    )) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a valid email address')),
+        const SnackBar(content: Text(AppStrings.invalidEmail)),
       );
       return;
     }
@@ -24,13 +26,17 @@ class ForgotPasswordViewModel extends ChangeNotifier {
 
     try {
       final result = await FirebaseFunctions.instance
-          .httpsCallable('sendOtpForForgotPassword')
-          .call({'email': email});
+          .httpsCallable(AppStrings.sendOtpForForgotPassword
+      )
+          .call({AppStrings.email
+          : email});
 
-      if (result.data['success'] == true) {
+      if (result.data[AppStrings.success
+      ] == true) {
         Navigator.pushNamed(context, AppRoutes.otp, arguments: email);
       } else {
-        throw Exception("OTP send failed");
+        throw Exception(AppStrings.otpSendFailed
+        );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../core/constants/app_strings.dart';
 import '../core/navigation/app_routes.dart';
 import '../core/services/firebase_auth_service.dart';
 
@@ -55,7 +56,8 @@ class LoginViewModel extends ChangeNotifier {
   Future<void> sendOtp(BuildContext context) async {
     if (phone.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your phone number')),
+        const SnackBar(content: Text(AppStrings.enterPhoneNumber
+        )),
       );
       return;
     }
@@ -79,7 +81,8 @@ class LoginViewModel extends ChangeNotifier {
           verificationId = verId;
           isOtpSent = true;
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('OTP sent to your phone')),
+            const SnackBar(content: Text(AppStrings.otpSentToPhone
+            )),
           );
           notifyListeners();
         },
@@ -100,7 +103,8 @@ class LoginViewModel extends ChangeNotifier {
   Future<void> verifyOtp(BuildContext context) async {
     if (otp.isEmpty || verificationId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter the OTP')),
+        const SnackBar(content: Text(AppStrings.enterOtp
+        )),
       );
       return;
     }
@@ -114,7 +118,8 @@ class LoginViewModel extends ChangeNotifier {
       await FirebaseAuth.instance.signInWithCredential(credential);
       Navigator.pushReplacementNamed(context, AppRoutes.socialFollow);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login successful')),
+        const SnackBar(content: Text(AppStrings.loginSuccess
+        )),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -138,7 +143,8 @@ class LoginViewModel extends ChangeNotifier {
 
       Navigator.pushReplacementNamed(context, AppRoutes.socialFollow);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login successful')),
+        const SnackBar(content: Text(AppStrings.loginSuccessful
+        )),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));

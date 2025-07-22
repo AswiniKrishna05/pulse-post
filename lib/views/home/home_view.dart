@@ -67,7 +67,7 @@ class _HomeViewState extends State<HomeView> {
           IconButton(
             icon: const Icon(Icons.account_circle),
             onPressed: () {
-              // Profile action
+              Navigator.pushNamed(context, '/google_map');
             },
           ),
           IconButton(

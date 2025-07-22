@@ -101,14 +101,14 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
               CustomTextField(
                 label: AppStrings.fullName,
                 hint: AppStrings.enterFullName,
-                onChanged: (val) => vm.updateField('fullName', val),
+                onChanged: (val) => vm.updateField(AppStrings.fullName, val),
               ),
               const SizedBox(height: 16),
 
               CustomTextField(
                 label: AppStrings.email,
                 hint: AppStrings.enterEmail,
-                onChanged: (val) => vm.updateField('email', val),
+                onChanged: (val) => vm.updateField(AppStrings.email, val),
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
@@ -211,7 +211,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                       _passwordDirty = true;
                     });
                   }
-                  vm.updateField('password', val);
+                  vm.updateField(AppStrings.password, val);
                   final error = vm.getPasswordErrorMessage();
                   if (error != null) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -258,19 +258,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                 label: AppStrings.confirmPassword,
                 hint: AppStrings.reEnterPassword,
                 obscure: true,
-                onChanged: (val) {
-                  vm.updateField('confirmPassword', val);
-                  _confirmPasswordTimer?.cancel();
-                  _confirmPasswordTimer = Timer(const Duration(seconds: 2), () {
-                    final error = vm.getPasswordErrorMessage();
-                    if (error != null && error.contains('Passwords do not match')) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(error)),
-                      );
-                    }
-                  });
-                },
-                borderColor: vm.showPasswordMismatchError ? Colors.red : null,
+                onChanged: (val) => vm.updateField(AppStrings.confirmPassword, val),
               ),
               const SizedBox(height: 16),
 

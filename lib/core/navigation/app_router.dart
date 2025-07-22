@@ -11,6 +11,7 @@ import '../../views/auth/splash_view.dart';
 import '../../views/auth/social_follow_view.dart';
 import 'app_routes.dart';
 import '../../views/auth/forgot_password_otp_view.dart';
+import '../../views/google_map_view.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -39,6 +40,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => HomeView());
       case AppRoutes.socialFollow:
         return MaterialPageRoute(builder: (_) => SocialFollowView());
+      case AppRoutes.googleMap:
+        return MaterialPageRoute(builder: (_) => const GoogleMapView());
 
 
       default:

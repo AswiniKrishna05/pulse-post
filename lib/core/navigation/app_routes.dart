@@ -9,5 +9,6 @@ class AppRoutes {
   static const passwordResetSuccess = '/password-reset-success';
   static const signupPersonal = '/signup/personal';
   static const socialFollow = '/social-follow';
+  static const googleMap = '/google_map';
 
 }

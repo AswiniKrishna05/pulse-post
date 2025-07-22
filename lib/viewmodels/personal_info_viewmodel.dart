@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import '../core/constants/app_strings.dart';
 import '../model/personal_info_model.dart';
 import '../core/navigation/app_routes.dart';
 import 'package:geolocator/geolocator.dart';
@@ -21,7 +22,7 @@ class PersonalInfoViewModel extends ChangeNotifier {
   String confirmPassword = '';
   DateTime? dob;
   int age = 0;
-  String gender = '';
+  String gender = ''; // No default, user must select
   String country = '';
   String state = '';
   String city = '';
@@ -59,12 +60,15 @@ class PersonalInfoViewModel extends ChangeNotifier {
   bool showPasswordSpecialCharError = false;
 
   String get passwordStrength {
-    if (password.length < 6) return 'Weak';
+    if (password.length < 6) return AppStrings.passwordStrengthWeak
+    ;
     final hasUpper = password.contains(RegExp(r'[A-Z]'));
     final hasSpecial = password.contains(RegExp(r'[&@#]'));
     final hasNumber = password.contains(RegExp(r'[0-9]'));
-    if (hasUpper && hasSpecial && hasNumber && password.length >= 8) return 'Strong';
-    if ((hasUpper || hasSpecial) && password.length >= 6) return 'Medium';
+    if (hasUpper && hasSpecial && hasNumber && password.length >= 8) return AppStrings.passwordStrengthStrong
+    ;
+    if ((hasUpper || hasSpecial) && password.length >= 6) return AppStrings.passwordStrengthMedium
+    ;
     return 'Weak';
   }
 
@@ -73,33 +77,40 @@ class PersonalInfoViewModel extends ChangeNotifier {
     if (password.isEmpty || confirmPassword.isEmpty) return null;
     if (password != confirmPassword) {
       showPasswordMismatchError = true;
-      errors.add('Passwords do not match. Please enter correctly');
+      errors.add(AppStrings.passwordsDoNotMatch
+      );
     } else {
       showPasswordMismatchError = false;
     }
     if (!password.contains(RegExp(r'[A-Z]'))) {
       showPasswordCapitalError = true;
-      errors.add('Please add at least one capital letter');
+      errors.add(AppStrings.addOneCapitalLetter
+      );
     } else {
       showPasswordCapitalError = false;
     }
     if (!password.contains(RegExp(r'[&@#]'))) {
       showPasswordSpecialCharError = true;
-      errors.add('Password must include at least one special character: & @ #');
+      errors.add(AppStrings.passwordNeedsSpecialChar
+      );
     } else {
       showPasswordSpecialCharError = false;
     }
     if (password.length < 6) {
-      errors.add('Password must be at least 6 characters long');
+      errors.add(AppStrings.passwordMinLength
+      );
     }
     if (errors.isEmpty) return null;
     return errors.join('\n');
   }
 
   String? getPhoneNumberError() {
-    if (mobile.isEmpty) return 'Phone number is required';
-    if (!RegExp(r'^[0-9]+$').hasMatch(mobile)) return 'Phone number must be numeric';
-    if (mobile.length != 10) return 'Phone number must be 10 digits';
+    if (mobile.isEmpty) return AppStrings.phoneNumberRequired
+    ;
+    if (!RegExp(r'^[0-9]+$').hasMatch(mobile)) return AppStrings.phoneNumberMustBeNumeric
+    ;
+    if (mobile.length != 10) return AppStrings.phoneNumberLengthError
+    ;
     return null;
   }
 
@@ -114,28 +125,47 @@ class PersonalInfoViewModel extends ChangeNotifier {
 
   String getValidationErrorMessage() {
     List<String> errors = [];
-    if (fullName.isEmpty) errors.add('Full Name');
-    if (email.isEmpty) errors.add('Email');
-    if (mobile.isEmpty) errors.add('Mobile Number');
-    if (password.isEmpty) errors.add('Password');
-    if (confirmPassword.isEmpty) errors.add('Confirm Password');
-    if (password != confirmPassword) errors.add('Passwords do not match');
-    if (dob == null) errors.add('Date of Birth');
-    if (dob != null && age < 16) errors.add('You must be at least 16 years old');
-    if (gender.isEmpty) errors.add('Gender');
-    if (country.isEmpty) errors.add('Country');
-    if (state.isEmpty) errors.add('State');
-    if (city.isEmpty) errors.add('City');
-    if (pinCode.isEmpty) errors.add('Pin Code');
-    if (qualification.isEmpty) errors.add('Qualification');
-    if (occupation.isEmpty) errors.add('Occupation');
-    if (totalSelectedInterests.isEmpty) errors.add('At least one interest');
+    if (fullName.isEmpty) errors.add(AppStrings.fullName
+    );
+    if (email.isEmpty) errors.add(AppStrings.email
+    );
+    if (mobile.isEmpty) errors.add(AppStrings.mobileNumber
+    );
+    if (password.isEmpty) errors.add(AppStrings.password
+    );
+    if (confirmPassword.isEmpty) errors.add(AppStrings.confirmPassword
+    );
+    if (password != confirmPassword) errors.add(AppStrings.passwordsDoNotMatch
+    );
+    if (dob == null) errors.add(AppStrings.dateOfBirth
+    );
+    if (dob != null && age < 16) errors.add(AppStrings.ageValidationError
+    );
+    if (gender.isEmpty) errors.add(AppStrings.gender
+    );
+    if (country.isEmpty) errors.add(AppStrings.country
+    );
+    if (state.isEmpty) errors.add(AppStrings.state
+    );
+    if (city.isEmpty) errors.add(AppStrings.city
+    );
+    if (pinCode.isEmpty) errors.add(AppStrings.pinCode
+    );
+    if (qualification.isEmpty) errors.add(AppStrings.qualification
+    );
+    if (occupation.isEmpty) errors.add(AppStrings.occupation
+    );
+    if (totalSelectedInterests.isEmpty) errors.add(AppStrings.atLeastOneInterest
+    );
     if (errors.isEmpty) return '';
     // If only one error and it's a custom message, show it directly
-    if (errors.length == 1 && (errors[0].startsWith('Passwords') || errors[0].startsWith('You must'))) {
+    if (errors.length == 1 && (errors[0].startsWith(AppStrings.passwords
+    ) || errors[0].startsWith(AppStrings.youMust
+    ))) {
       return errors[0];
     }
-    return 'Please correct: ' + errors.join(', ');
+    return AppStrings.pleaseCorrect
+        + errors.join(', ');
   }
 
 
@@ -151,13 +181,22 @@ class PersonalInfoViewModel extends ChangeNotifier {
 
   void updateField(String field, String value) {
     switch (field) {
-      case 'fullName': fullName = value; break;
-      case 'email': email = value; break;
-      case 'mobile': mobile = value; break;
-      case 'password': password = value; break;
-      case 'confirmPassword': confirmPassword = value; break;
-      case 'gender': gender = value; break;
-      case 'country': country = value; countryController.text = value; break;
+      case AppStrings.fullName
+          : fullName = value; break;
+      case AppStrings.email
+          : email = value; break;
+      case AppStrings.mobile
+          : mobile = value; break;
+      case AppStrings.password
+          : password = value; break;
+      case AppStrings.confirmPassword
+          : confirmPassword = value; break;
+      case AppStrings.genderKey:
+        gender = value;
+        print('Gender updated: $gender'); // Debug print
+        break;
+      case AppStrings.country
+          : country = value; countryController.text = value; break;
       case 'state': state = value; stateController.text = value; break;
       case 'city': city = value; cityController.text = value; break;
       case 'pinCode': pinCode = value; pinCodeController.text = value; break;
@@ -180,15 +219,24 @@ class PersonalInfoViewModel extends ChangeNotifier {
 
   Set<String> getCategorySet(String category) {
     switch (category) {
-      case 'education': return education;
-      case 'technology': return technology;
-      case 'lifestyle': return lifestyle;
-      case 'entertainment': return entertainment;
-      case 'careerAndMoney': return careerAndMoney;
-      case 'socialMedia': return socialMedia;
-      case 'personalGrowth': return personalGrowth;
-      case 'regionalAndCultural': return regionalAndCultural;
-      case 'wellbeingAndAwareness': return wellbeingAndAwareness;
+      case AppStrings.education
+          : return education;
+      case AppStrings.technology
+          : return technology;
+      case AppStrings.lifestyle
+          : return lifestyle;
+      case AppStrings.entertainment
+          : return entertainment;
+      case AppStrings.careerAndMoney
+          : return careerAndMoney;
+      case AppStrings.socialMedia
+          : return socialMedia;
+      case AppStrings.personalGrowth
+          : return personalGrowth;
+      case AppStrings.regionalAndCultural
+          : return regionalAndCultural;
+      case AppStrings.wellbeingAndAwareness
+          : return wellbeingAndAwareness;
       default: return {};
     }
   }
@@ -271,6 +319,8 @@ class PersonalInfoViewModel extends ChangeNotifier {
       print('DEBUG PersonalInfoModel: ' + userModel.toMap().toString());
 
       await FirebaseFirestore.instance.collection('users').doc(uid).set(userModel.toMap());
+      // Mark personal info as completed
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({'isCompletedInfo': true});
 
       Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login, (_) => false);
     } catch (e) {

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../core/constants/app_strings.dart';
+
 class HomeViewModel extends ChangeNotifier {
-  String username = 'Pulse User';
+  String username = AppStrings.pulseUser
+  ;
 
   int balance = 0;
   int credits = 0;

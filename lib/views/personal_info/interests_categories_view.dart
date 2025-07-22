@@ -15,59 +15,37 @@ class InterestsCategoriesView extends StatelessWidget {
       children: [
         buildCategoryChips(
           context: context,
-          title: AppStrings.education
-          ,
+          title: AppStrings.education,
           selected: vm.education,
           options: [
-            AppStrings.nios
-            ,
-            AppStrings.onlineLearning
-            ,
-            AppStrings.schoolLife
-            ,
-            AppStrings.collegeStudents
-            ,
-            AppStrings.tuitionAndCoaching
-            ,
-            AppStrings.skillDevelopment
-            ,
-            AppStrings.competitiveExams
-            ,
-            AppStrings.spokenEnglish
-            ,
+            AppStrings.nios,
+            AppStrings.onlineLearning,
+            AppStrings.schoolLife,
+            AppStrings.collegeStudents,
+            AppStrings.tuitionAndCoaching,
+            AppStrings.skillDevelopment,
+            AppStrings.competitiveExams,
+            AppStrings.spokenEnglish,
             AppStrings.studyAbroad
-
           ],
-          categoryKey: AppStrings.educationKey
-          ,
+          categoryKey: AppStrings.education, // use correct constant
         ),
         buildCategoryChips(
           context: context,
-          title: AppStrings.technology
-          ,
+          title: AppStrings.technology,
           selected: vm.technology,
           options: [
-            AppStrings.smartphones
-            ,
-            AppStrings.mobileApps
-            ,
-            AppStrings.gadgets
-            ,
-            AppStrings.internetTips
-            ,
-            AppStrings.digitalPayments
-            ,
-            AppStrings.aiAndChatgpt
-            ,
-            AppStrings.codingProgramming
-            ,
-            AppStrings.webDevelopment
-            ,
+            AppStrings.smartphones,
+            AppStrings.mobileApps,
+            AppStrings.gadgets,
+            AppStrings.internetTips,
+            AppStrings.digitalPayments,
+            AppStrings.aiAndChatgpt,
+            AppStrings.codingProgramming,
+            AppStrings.webDevelopment,
             AppStrings.ethicalHacking
-
           ],
-          categoryKey:AppStrings.technologyKey
-          ,
+          categoryKey: AppStrings.technology, // use correct constant
         ),
         buildCategoryChips(
           context: context,
@@ -94,7 +72,7 @@ class InterestsCategoriesView extends StatelessWidget {
             AppStrings.minimalism
 
           ],
-          categoryKey: 'lifestyle',
+          categoryKey: AppStrings.lifestyle,
         ),
         buildCategoryChips(
           context: context,
@@ -113,7 +91,7 @@ class InterestsCategoriesView extends StatelessWidget {
             AppStrings.dance,
 
           ],
-          categoryKey: 'entertainment',
+          categoryKey: AppStrings.entertainment,
         ),
         buildCategoryChips(
           context: context,
@@ -132,7 +110,7 @@ class InterestsCategoriesView extends StatelessWidget {
             AppStrings.investmentAndSavings
 
           ],
-          categoryKey: 'careerAndMoney',
+          categoryKey: AppStrings.careerAndMoney,
         ),
         buildCategoryChips(
           context: context,
@@ -151,7 +129,7 @@ class InterestsCategoriesView extends StatelessWidget {
             AppStrings.bloggingVlogging,
 
           ],
-          categoryKey: 'socialMedia',
+          categoryKey: AppStrings.socialMedia,
         ),
         buildCategoryChips(
           context: context,
@@ -169,7 +147,7 @@ class InterestsCategoriesView extends StatelessWidget {
             AppStrings.readingBookSummaries,
 
           ],
-          categoryKey: 'personalGrowth',
+          categoryKey: AppStrings.personalGrowth,
         ),
         buildCategoryChips(
           context: context,
@@ -187,7 +165,7 @@ class InterestsCategoriesView extends StatelessWidget {
             AppStrings.artHandicrafts
 
           ],
-          categoryKey: 'regionalAndCultural',
+          categoryKey: AppStrings.regionalAndCultural,
         ),
         buildCategoryChips(
           context: context,
@@ -204,7 +182,7 @@ class InterestsCategoriesView extends StatelessWidget {
             AppStrings.studyMotivation
 
           ],
-          categoryKey: 'wellbeingAndAwareness',
+          categoryKey: AppStrings.wellbeingAndAwareness,
         ),
         const SizedBox(height: 16),
         Text('${vm.totalSelectedInterests} selected'),
