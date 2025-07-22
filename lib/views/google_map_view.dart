@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -28,6 +29,8 @@ class _GoogleMapViewState extends State<GoogleMapView> {
   @override
   void initState() {
     super.initState();
+    _initForegroundTask();
+    _startForegroundTask();
     _listenToLocationChanges();
   }
 
@@ -50,6 +53,42 @@ class _GoogleMapViewState extends State<GoogleMapView> {
       }
     });
   }
+
+  void _startForegroundTask() {
+    print('Starting foreground task...');
+    FlutterForegroundTask.startService(
+      notificationTitle: 'Tracking Location',
+      notificationText: 'Your movement is being tracked',
+    );
+  }
+
+
+
+  void _initForegroundTask() {
+    FlutterForegroundTask.init(
+      androidNotificationOptions: AndroidNotificationOptions(
+        channelId: 'location_channel_id',
+        channelName: 'Location Tracking',
+        channelDescription: 'Tracking your movement in the background',
+        channelImportance: NotificationChannelImportance.LOW,
+        priority: NotificationPriority.LOW,
+      ),
+      iosNotificationOptions: const IOSNotificationOptions(
+        showNotification: true,
+        playSound: true,
+      ),
+      foregroundTaskOptions: ForegroundTaskOptions(
+        eventAction: ForegroundTaskEventAction.repeat(5000),
+        autoRunOnBoot: true,
+        autoRunOnMyPackageReplaced: true,
+        allowWakeLock: true,
+        allowWifiLock: true,
+      ),
+    );
+  }
+
+
+
 
   Future<void> _determinePosition() async {
     bool serviceEnabled;
@@ -167,6 +206,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
   @override
   void dispose() {
     _mapController?.dispose();
+    FlutterForegroundTask.stopService();
     super.dispose();
   }
 
