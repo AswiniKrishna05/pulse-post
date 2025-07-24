@@ -4,8 +4,11 @@ import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:provider/provider.dart';
 import 'dart:io' show Platform;
 import 'package:url_launcher/url_launcher.dart';
+
+import '../viewmodels/location_view_model.dart';
 
 class GoogleMapView extends StatefulWidget {
   const GoogleMapView({Key? key}) : super(key: key);
@@ -42,6 +45,11 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     );
     _positionStream!.listen((Position position) {
       final newLatLng = LatLng(position.latitude, position.longitude);
+
+      // Save in DB
+      context.read<LocationViewModel>().saveLocation(
+          position.latitude, position.longitude);
+      print("Location saved");
       setState(() {
         _currentPosition = newLatLng;
       });
@@ -211,6 +219,14 @@ class _GoogleMapViewState extends State<GoogleMapView> {
 
   @override
   Widget build(BuildContext context) {
+    final vm = context.watch<LocationViewModel>();
+    Polyline routePolyline = Polyline(
+      polylineId: const PolylineId('db_route'),
+      color: Colors.blue,
+      width: 6,
+      points: vm.routePoints,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Google Map'),
@@ -246,13 +262,13 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                   infoWindow: const InfoWindow(title: 'Destination'),
                 ),
               },
-              polylines: _polylines,
-              onMapCreated: (controller) {
-                _mapController = controller;
-                _mapReady = true;
-                if (_currentPosition != null) {
-                  _animateCameraWithEffect(_currentPosition!, 90);
-                  _lastAnimatedPosition = _currentPosition!;
+        polylines: {routePolyline},
+        onMapCreated: (controller) {
+          _mapController = controller;
+          _mapReady = true;
+          if (_currentPosition != null) {
+            _animateCameraWithEffect(_currentPosition!, 90);
+            _lastAnimatedPosition = _currentPosition!;
                 }
               },
             ),

@@ -7,13 +7,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ziya_project/core/database/app_db.dart';
 
 import 'package:ziya_project/main.dart';
+import 'package:ziya_project/repository/location_repository.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    final db = AppDatabase();
+    final repo = LocationRepository(db);
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(MyApp(repo: repo));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
