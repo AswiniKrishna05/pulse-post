@@ -10,6 +10,8 @@ import '../core/navigation/app_routes.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:async';
 
 class PersonalInfoViewModel extends ChangeNotifier {
   File? profileImage;
@@ -437,6 +439,48 @@ class PersonalInfoViewModel extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Phone verified!')));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid OTP: $e')));
+    }
+  }
+
+  // For real-time polyline tracking
+  List<LatLng> traveledPath = [];
+  StreamSubscription<Position>? _positionStream;
+
+  void startTracking() {
+    _positionStream = Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 5, // meters
+      ),
+    ).listen((Position position) {
+      traveledPath.add(LatLng(position.latitude, position.longitude));
+      notifyListeners();
+    });
+  }
+
+  void stopTracking() {
+    _positionStream?.cancel();
+    _positionStream = null;
+  }
+
+  void clearTraveledPath() {
+    traveledPath.clear();
+    notifyListeners();
+  }
+
+  // Simulate movement for testing polyline without physical movement
+  Future<void> simulatePath() async {
+    List<LatLng> mockPoints = [
+      LatLng(12.9716, 77.5946),
+      LatLng(12.9720, 77.5950),
+      LatLng(12.9725, 77.5955),
+      LatLng(12.9730, 77.5960),
+      LatLng(12.9735, 77.5965),
+    ];
+    for (var point in mockPoints) {
+      traveledPath.add(point);
+      notifyListeners();
+      await Future.delayed(Duration(seconds: 1));
     }
   }
 }
